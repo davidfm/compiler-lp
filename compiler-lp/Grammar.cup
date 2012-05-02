@@ -38,8 +38,8 @@ parser code {:
 		else{
 			try {
 
-				Lexer lecio = new Lexer(new FileReader(args[0]));
-				new parser(lexico).parse;
+				Lexer lexico = new Lexer(new FileReader(args[0]));
+				new parser(lexico).parse();
 
 
 			} catch (Exception e){
@@ -52,7 +52,7 @@ parser code {:
 :}
 
 
-terminal PLUS, MINUS, TIMES, DIV, LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET, INTEGER, FLOAT, BOOLEAN, STRING, SEMI, COMMA, ASSIGN, MAIN, PRINT, PRINTLINE, NUM_INTEGER, NUM_FLOAT, BOOL, ID;
+terminal PLUS, MINUS, TIMES, DIV, LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET, INTEGER, FLOAT, BOOLEAN, STRING, SEMI, COMMA, ASSIGN, MAIN, PRINT, PRINTLINE, NUM_INTEGER, NUM_FLOAT, BOOL, ID, STRG;
 
 non terminal Program, Statements, Statement, Declaration, Assign, Type, Expression;
 
@@ -61,12 +61,12 @@ precedence left MINUS;
 precedence left TIMES;
 precedence left DIV;
 
-Program ::= MAIN LPAREN RPAREN LBRACE Statements RBRACE;
+Program ::= {: System.out.println("Begining"); :}  MAIN LPAREN RPAREN LBRACE Statements RBRACE {: System.out.println("End"); :};
 Statements ::= Statement Statements | Statement;
-Statement ::= Declaration | Assign;
-Declaration ::= Type ID SEMI;
-Assign ::= ID ASSIGN Expression SEMI;
-Type ::= INTEGER |FLOAT|STRING;
+Statement ::= {: System.out.println("Declaration call"); :}  Declaration | {: System.out.println("Assign call"); :} Assign;
+Declaration ::= {: System.out.println("Declaration 2"); :}Type ID SEMI;
+Assign ::= {: System.out.println("Assign 2"); :} ID ASSIGN {: System.out.println("Expression beginning"); :} Expression SEMI;
+Type ::= {: System.out.println("Type"); :} INTEGER |FLOAT|STRING;
 Expression ::= Expression PLUS Expression
 		|Expression MINUS Expression
 		|Expression TIMES Expression

@@ -1,16 +1,11 @@
-/*Inicio de un comentario*/
-4+5=2;
-hola
-int
-"hola"
-boolean
-float 4.328120
-int a=4;
-int b=5;
-int c = b+c;
-true false
-truefalse
-/*Esto es una
-prueba de 
-comentario de varias lineas*/
-//Esto es una prueba de comentario de una linea
+main(){
+
+int a;
+int b;
+int c;
+
+a=1;
+b=2;
+c=a+b;
+
+}
