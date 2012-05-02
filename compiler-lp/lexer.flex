@@ -24,6 +24,8 @@
 	
 */
 
+package es.davidfm.compiler.analysis;
+
 import java_cup.runtime.Symbol;
 import java.io.IOException;
 
@@ -36,12 +38,12 @@ import java.io.IOException;
 %line
 %column
 
-%standalone
+//%standalone
 
-//%final
+%final
 
-//%cupsym Symbol
-//%cup
+%cupsym sym
+%cup
 %char
 
 %state COMMENT1
@@ -54,15 +56,38 @@ import java.io.IOException;
 
 %}
 
+%{
+
+	String tok = "";
+
+	private Symbol token(int token, Object lexeme) throws IOException{
+
+		int line = yyline + 1;
+		tok = (String) lexeme;
+		if (Token != sym.EOF){
+			InfoCode.saveInfo(line,tok);
+		return new Symbol(token,lexeme);
+	
+	
+	private Symbol token(int token) throws IOException{
+
+		return token(token,yytext());
+
+	}
+
+
+
+
+%}
+
 %eofval{
 	if (comments){
-		System.out.println("There are unclosed comments");
+		System.out.println("ERROR: There are unclosed comments");
 		System.exit(1);
 	}
 
 	else
-		System.out.println("Analsys ended succesfully");
-		System.exit(1);
+		return token(sym.EOF);
 %eofval}
 
 
@@ -81,32 +106,33 @@ STRG="\"".+"\""
 <COMMENT1> "*/" {yybegin(YYINITIAL); comments=false;}
 <COMMENT1, COMMENT2> [^] {}
 
-<YYINITIAL> "+" {System.out.println("PLUS");}
-<YYINITIAL> "-" {System.out.println("MINUS");}
-<YYINITIAL> "*" {System.out.println("TIMES");}
-<YYINITIAL> "/" {System.out.println("DIV");}
-<YYINITIAL> "(" {System.out.println("LPAREN");}
-<YYINITIAL> ")" {System.out.println("RPAREN");}
-<YYINITIAL> "{" {System.out.println("LBRACE");}
-<YYINITIAL> "}" {System.out.println("RBRACE");}
-<YYINITIAL> "int" {System.out.println("INTEGER");}
-<YYINITIAL> "float" {System.out.println("FLOAT");}
-<YYINITIAL> "boolean" {System.out.println("BOOLEAN");}
-<YYINITIAL> "String" {System.out.println("STRING");}
-<YYINITIAL> ";" {System.out.println("SEMI");}
-<YYINITIAL> "," {System.out.println("COMMA");}
-<YYINITIAL> "=" {System.out.println("ASSIGN");}
-<YYINITIAL> "main" {System.out.println("MAIN");}
-<YYINITIAL> "print" {System.out.println("PRINT");}
-<YYINITIAL> "printline" {System.out.println("PRINTLINE");}
+<YYINITIAL> "+" {return token(sym.PLUS);}
+<YYINITIAL> "-" {return token(sym.MINUS);}
+<YYINITIAL> "*" {return token(sym.TIMES);}
+<YYINITIAL> "/" {return token(sym.DIV);}
+<YYINITIAL> "(" {return token(sym.LPAREN);}
+<YYINITIAL> ")" {return token(sym.RPAREN);}
+<YYINITIAL> "{" {return token(sym.LBRACE);}
+<YYINITIAL> "}" {return token(sym.RBRACE);}
+<YYINITIAL> "int" {return token(sym.INTEGER);}
+<YYINITIAL> "float" {return token(sym.FLOAT);}
+<YYINITIAL> "boolean" {return token(sym.BOOLEAN);}
+<YYINITIAL> "String" {return token(sym.STRING);}
+<YYINITIAL> ";" {return token(sym.SEMI);}
+<YYINITIAL> "," {return token(sym.COMMA);}
+<YYINITIAL> "=" {return token(sym.ASSIGN);}
+<YYINITIAL> "main" {return token(sym.MAIN);}
+<YYINITIAL> "print" {return token(sym.PRINT);}
+<YYINITIAL> "printline" {return token(sym.PRINTLINE);}
 
-<YYINITIAL> {NUM_INTEGER} {System.out.println("NUM_INTEGER");}
-<YYINITIAL> {NUM_FLOAT} {System.out.println("NUM_FLOAT");}
-<YYINITIAL> {BOOL} {System.out.println("BOOL");}
-<YYINITIAL> {ID} {System.out.println("ID");}
-<YYINITIAL> {STRG} {System.out.println("STRG");}
+<YYINITIAL> {NUM_INTEGER} {return token(sym.NUM_INTEGER);}
+<YYINITIAL> {NUM_FLOAT} {return token(sym.NUM_FLOAT);}
+<YYINITIAL> {BOOL} {return token(sym.BOOL);}
+<YYINITIAL> {ID} {return token(sym.ID);}
+<YYINITIAL> {STRG} {return token(sym.STRG);}
  
-<YYINITIAL> [^] {System.out.println("Error en linea: " + yyline + " columna: " + yycolumn + " ----> " + yytext());}
+<YYINITIAL> [^] {System.out.println("Error en linea: " + yyline + " columna: " + yycolumn + " ----> " + yytext());
+		System.exit(1);}
 
 
 
