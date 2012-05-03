@@ -61,18 +61,19 @@ precedence left MINUS;
 precedence left TIMES;
 precedence left DIV;
 
-Program ::= {: System.out.println("Begining"); :}  MAIN LPAREN RPAREN LBRACE Statements RBRACE {: System.out.println("End"); :};
+Program ::= MAIN LPAREN RPAREN LBRACE Statements RBRACE;
 Statements ::= Statement Statements | Statement;
-Statement ::= {: System.out.println("Declaration call"); :}  Declaration | {: System.out.println("Assign call"); :} Assign;
-Declaration ::= {: System.out.println("Declaration 2"); :}Type ID SEMI;
-Assign ::= {: System.out.println("Assign 2"); :} ID ASSIGN {: System.out.println("Expression beginning"); :} Expression SEMI;
-Type ::= {: System.out.println("Type"); :} INTEGER |FLOAT|STRING;
+Statement ::= Declaration |  Assign;
+Declaration ::= Type ID SEMI;
+Assign ::=  ID ASSIGN Expression SEMI;
+Type ::= INTEGER |FLOAT|STRING;
 Expression ::= Expression PLUS Expression
 		|Expression MINUS Expression
 		|Expression TIMES Expression
 		|Expression DIV Expression
 		|NUM_INTEGER
 		|NUM_FLOAT
+		|STRG
 		|ID
 		|LPAREN Expression RPAREN;
 
