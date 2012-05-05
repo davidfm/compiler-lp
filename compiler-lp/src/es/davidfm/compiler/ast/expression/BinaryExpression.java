@@ -26,60 +26,42 @@
 
 
 
-package es.davidfm.compiler.ast.structure;
-
-import java.util.Hashtable;
-import java.util.Stack;
-
-
+package es.davidfm.compiler.ast.expression;
 
 /**
  * 
  */
-public class TSymbols {
+public class BinaryExpression extends Expression {
 	
-	private Stack <Hashtable<String,Variable>> 	stack;
+	private String op;
+	private Expression left;
+	private Expression right;
 	
 	
-	public TSymbols(){
+	public BinaryExpression(String type, String op, Expression left, Expression right){
 		
-		this.stack = new Stack<Hashtable<String,Variable>>();
+		super(type);
+		this.op = op;
+		this.left = left;
+		this.right = right;
+	}
+
+
+	public String getOp() {
+		return op;
+	}
+
+
+	public Expression getLeft() {
+		return left;
+	}
+
+
+	public Expression getRight() {
+		return right;
 	}
 	
 	
-	public void addScope(){
-		
-		this.stack.push(new Hashtable<String,Variable>());
-	}
-	
-	public void deleteScope(){
-		
-		this.stack.pop();
-	}
-	
-	
-	public void addVariable(Variable v){
-		
-		this.stack.peek().put(v.getName(), v);
-	}
-	
-	public Variable getVariable(String name){
-		
-		Hashtable<String,Variable> table = this.stack.peek();
-		
-		if (table.containsKey(name))
-			
-			return (Variable) table.get(name);
-		
-		else
-			return null;
-	}
-	
-	
-	public boolean exists(String name){
-		
-		return this.stack.peek().containsKey(name);
-	}
 	
 
 }

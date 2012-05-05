@@ -26,60 +26,32 @@
 
 
 
-package es.davidfm.compiler.ast.structure;
-
-import java.util.Hashtable;
-import java.util.Stack;
-
-
+package es.davidfm.compiler.ast.expression;
 
 /**
  * 
  */
-public class TSymbols {
+public class FloatLiteralExpression extends Expression {
 	
-	private Stack <Hashtable<String,Variable>> 	stack;
+	private float value;
 	
-	
-	public TSymbols(){
+	public FloatLiteralExpression(String lexeme){
 		
-		this.stack = new Stack<Hashtable<String,Variable>>();
+		super("float");
+		this.value = Float.parseFloat(lexeme);
+	}
+	
+	public FloatLiteralExpression(float value){
+		super("float");
+		this.value = value;
+	}
+
+	public float getValue() {
+		return value;
 	}
 	
 	
-	public void addScope(){
-		
-		this.stack.push(new Hashtable<String,Variable>());
-	}
 	
-	public void deleteScope(){
-		
-		this.stack.pop();
-	}
-	
-	
-	public void addVariable(Variable v){
-		
-		this.stack.peek().put(v.getName(), v);
-	}
-	
-	public Variable getVariable(String name){
-		
-		Hashtable<String,Variable> table = this.stack.peek();
-		
-		if (table.containsKey(name))
-			
-			return (Variable) table.get(name);
-		
-		else
-			return null;
-	}
-	
-	
-	public boolean exists(String name){
-		
-		return this.stack.peek().containsKey(name);
-	}
 	
 
 }

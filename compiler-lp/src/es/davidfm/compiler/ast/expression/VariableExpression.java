@@ -26,60 +26,25 @@
 
 
 
-package es.davidfm.compiler.ast.structure;
+package es.davidfm.compiler.ast.expression;
 
-import java.util.Hashtable;
-import java.util.Stack;
-
-
+import es.davidfm.compiler.ast.structure.Variable;
 
 /**
  * 
  */
-public class TSymbols {
+public class VariableExpression extends Expression {
 	
-	private Stack <Hashtable<String,Variable>> 	stack;
+	Variable variable;
 	
-	
-	public TSymbols(){
+	public VariableExpression(Variable var){
 		
-		this.stack = new Stack<Hashtable<String,Variable>>();
+		super(var.getType());
+		this.variable = var;
 	}
-	
-	
-	public void addScope(){
-		
-		this.stack.push(new Hashtable<String,Variable>());
+
+	public Variable getVariable() {
+		return variable;
 	}
-	
-	public void deleteScope(){
-		
-		this.stack.pop();
-	}
-	
-	
-	public void addVariable(Variable v){
-		
-		this.stack.peek().put(v.getName(), v);
-	}
-	
-	public Variable getVariable(String name){
-		
-		Hashtable<String,Variable> table = this.stack.peek();
-		
-		if (table.containsKey(name))
-			
-			return (Variable) table.get(name);
-		
-		else
-			return null;
-	}
-	
-	
-	public boolean exists(String name){
-		
-		return this.stack.peek().containsKey(name);
-	}
-	
 
 }

@@ -26,60 +26,34 @@
 
 
 
-package es.davidfm.compiler.ast.structure;
-
-import java.util.Hashtable;
-import java.util.Stack;
-
-
+package es.davidfm.compiler.ast.expression;
 
 /**
  * 
  */
-public class TSymbols {
+public class IntegerLiteralExpression extends Expression {
 	
-	private Stack <Hashtable<String,Variable>> 	stack;
+	private int value;
 	
-	
-	public TSymbols(){
+	public IntegerLiteralExpression(String lexeme){
 		
-		this.stack = new Stack<Hashtable<String,Variable>>();
+		super("int");
+		this.value = Integer.parseInt(lexeme);
 	}
 	
 	
-	public void addScope(){
+	public IntegerLiteralExpression(int value){
 		
-		this.stack.push(new Hashtable<String,Variable>());
+		super("int");
+		this.value = value;
 	}
-	
-	public void deleteScope(){
-		
-		this.stack.pop();
-	}
-	
-	
-	public void addVariable(Variable v){
-		
-		this.stack.peek().put(v.getName(), v);
-	}
-	
-	public Variable getVariable(String name){
-		
-		Hashtable<String,Variable> table = this.stack.peek();
-		
-		if (table.containsKey(name))
-			
-			return (Variable) table.get(name);
-		
-		else
-			return null;
+
+
+	public int getValue() {
+		return value;
 	}
 	
 	
-	public boolean exists(String name){
-		
-		return this.stack.peek().containsKey(name);
-	}
 	
 
 }
