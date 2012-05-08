@@ -26,32 +26,54 @@
 
 
 
-package es.davidfm.compiler.ast.statement;
+package es.davidfm.compiler.analysis;
 
-import java.util.ArrayList;
+import es.davidfm.compiler.ast.statement.BlockStatement;
+import es.davidfm.compiler.ast.statement.Statement;
+import es.davidfm.compiler.ast.structure.Program;
 
 /**
  * 
  */
-public class BlockStatement extends Statement {
+public class Semantic {
+
 	
-	private ArrayList<Statement> list;
+	private Program program;
 	
-	
-	public BlockStatement(){
+	private BlockStatement body;
 		
-		this.list = new ArrayList<Statement>();
-	}
-
-
-	public ArrayList<Statement> getList() {
-		return list;
-	}
 	
-	
-	public void add(Statement stm){
+	public Semantic(){
 		
-		this.list.add(stm);
+		program = new Program();
+		body = new BlockStatement();
 	}
+	
+	
+		
+	public Program getProgram(){
+		
+		return this.program;
+	}
+	
+	
+	public void setBody(){
+		
+		program.setBody(body);
+	}
+	
+	
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

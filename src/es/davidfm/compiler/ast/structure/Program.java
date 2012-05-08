@@ -26,11 +26,62 @@
 
 
 
-package es.davidfm.compiler.ast.statement;
+package es.davidfm.compiler.ast.structure;
+
+import java.util.ArrayList;
+
+import es.davidfm.compiler.ast.statement.BlockStatement;
 
 /**
  * 
  */
-public abstract class Statement {
+public class Program {
+	
+	private ArrayList<Variable> variables;
+	private BlockStatement body;
+	private TSymbols tos;
+	
+	
+	public Program(){
+		
+		this.variables = new ArrayList<Variable>();
+		this.body =	null;
+		this.tos = new TSymbols();
+		this.tos.addScope();
+	}
+	
+	
+	public void addVariable(Variable var){
+		
+		this.variables.add(var);
+		
+	}
+	
+	public ArrayList<Variable> getVariables(){
+		
+		return this.variables;
+	}
+	
+	public void newScope(){
+		
+		this.tos.addScope();
+	}
+	
+	public void deleteScope(){
+		
+		this.tos.deleteScope();
+	}
+	
+	public void setBody(BlockStatement body){
+		
+		this.body = body;
+	}
+	
+	public BlockStatement getBody(){
+		
+		return this.body;
+	}
+	
+	
 
 }

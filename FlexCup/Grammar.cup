@@ -1,0 +1,104 @@
+/**
+    Copyright (C) 2012 David Fernández
+
+LICENSE:
+
+    This file is part of CalculatorCompiler.
+
+    CalculatorCompiler is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    CalculatorCompiler is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with CalculatorCompiler. If not, see <http://www.gnu.org/licenses/>.
+
+@author David Fernández <davidfm[at]linux[dot]com>
+@license http://www.gnu.org/licenses
+@copyright 2012 David Fernández
+
+*/
+
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+import es.davidfm.compiler.AST.Structure.*;
+
+
+
+parser code{:
+
+Lexer lexer;
+
+
+:};
+
+
+
+scan with {:return lexer.next_token(); :};
+
+
+action code {:
+
+TSymbols table;
+
+void init() throws IOException{
+
+table = new TSymbols();
+
+}
+
+
+
+
+
+:};
+
+
+terminal PLUS, MINUS, TIMES, DIV, LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET, INTEGER, FLOAT, BOOLEAN, STRING, SEMI, COMMA, ASSIGN, MAIN, PRINT, PRINTLINE, NUM_INTEGER, NUM_FLOAT, BOOL;
+
+terminal String ID;
+
+
+non terminal Program,
+non terminal Body Body
+non terminal Statements Statements
+non terminal Statement Statement
+non terminal Declaration
+non terminal AssignStatement Assign
+non terminal String Type
+non terminal Expression Expression
+
+
+precedence left ASSIGN;
+precedence left PLUS, MINUS;
+precedence left TIMES, DIV;
+precedence left LPAREN, RPAREN;
+
+start with Program;
+
+Program ::= MAIN LPAREN RPAREN Body;
+
+Body ::= LBRACE Statements RBRACE;
+
+Statements ::= Statement Statements | Statement;
+Statement ::= Declaration | Assign;
+Declaration ::= Type ID;
+Assign ::= ID ASSIGN Expression SEMI;
+Type ::= INTEGER |FLOAT|STRING;
+Expression ::= Expression PLUS Expression
+|Expression MINUS Expression
+|Expression TIMES Expression
+|Expression DIV Expression
+|NUM_INTEGER
+|NUM_FLOAT
+|ID
+|LPAREN Expression RPAREN;
+
+
+ 
