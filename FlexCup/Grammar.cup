@@ -33,7 +33,19 @@ import es.davidfm.compiler.AST.Structure.*;
 
 parser code{:
 
-Lexer lexer;
+	Lexer lexer;
+	String outputFile;
+	
+	
+	public SintacSem(Lexer lexer){
+	
+		super(lexer)
+		this.lexer = lexer;
+		outputFile="/myProgram.in";
+		
+	}
+	
+	
 
 
 :};
@@ -45,11 +57,14 @@ scan with {:return lexer.next_token(); :};
 
 action code {:
 
-TSymbols table;
-
-void init() throws IOException{
-
-table = new TSymbols();
+	Program program;
+	
+	void init(){
+	
+		program = new Program();
+	
+	}
+	
 
 }
 
@@ -60,19 +75,45 @@ table = new TSymbols();
 :};
 
 
-terminal PLUS, MINUS, TIMES, DIV, LPAREN, RPAREN, LBRACE, RBRACE, LBRACKET, RBRACKET, INTEGER, FLOAT, BOOLEAN, STRING, SEMI, COMMA, ASSIGN, MAIN, PRINT, PRINTLINE, NUM_INTEGER, NUM_FLOAT, BOOL;
+terminal String PLUS;
+terminal String MINUS;
+terminal String TIMES;
+terminal String DIV;
+terminal String LPAREN;
+terminal String RPAREN;
+terminal String LBRACE;
+terminal String RBRACE;
+terminal String LBRACKET;
+terminal String RBRACKET;
+terminal String INTEGER;
+terminal String FLOAT;
+terminal String BOOLEAN;
+terminal String STRING;
+terminal String SEMI;
+terminal String COMMA;
+terminal String ASSIGN;
+terminal String MAIN;
+terminal String PRINT;
+terminal String PRINTLINE;
+terminal String NUM_INTEGER;
+terminal String NUM_FLOAT;
+terminal String BOOL;
+terminal String STRG;
 
 terminal String ID;
 
 
-non terminal Program,
-non terminal Body Body
-non terminal Statements Statements
+non terminal Program Program,
+non terminal BlockStatement Body
 non terminal Statement Statement
 non terminal Declaration
 non terminal AssignStatement Assign
 non terminal String Type
 non terminal Expression Expression
+non terminal String Type;
+non terminal Print
+non terminal Println
+
 
 
 precedence left ASSIGN;
@@ -82,23 +123,50 @@ precedence left LPAREN, RPAREN;
 
 start with Program;
 
-Program ::= MAIN LPAREN RPAREN Body;
+Program ::= {: System.out.println("Begining of the program");
+			init(); :}		
+ 			MAIN LPAREN RPAREN LBRACE Body RBRACE;
+ 			
+Body ::= 	{: program.setBody(new BlockStatement()); :}
+			Statement Body | Statement;
+			
+Statement ::= Declaration 
+			| Assign 
+			| Print 
+			| Println;
 
-Body ::= LBRACE Statements RBRACE;
-
-Statements ::= Statement Statements | Statement;
-Statement ::= Declaration | Assign;
-Declaration ::= Type ID;
-Assign ::= ID ASSIGN Expression SEMI;
-Type ::= INTEGER |FLOAT|STRING;
+Declaration ::= Type:t ID:id SEMI
+				{: if (program.containsVariable(id)){
+					//error
+					} else {
+						Variable v = new Variable(t,id);
+						program.addVariable(v);
+					}
+					
+				
+Assign ::= ID:id ASSIGN Expression:e SEMI
+			{: if (program.containsVariable(id)){
+				Variable v = program.getVariable(id);
+				AssignStatement a = new AssignStatement(id,e);
+			}
+			;
+		
+Type ::= INTEGER:i {: RESULT = new String("int"); :} 
+					|FLOAT {: RESULT = new String("float"); :} 
+					|STRING {: RESULT = new String("String"); :} ;
 Expression ::= Expression PLUS Expression
 |Expression MINUS Expression
 |Expression TIMES Expression
 |Expression DIV Expression
-|NUM_INTEGER
-|NUM_FLOAT
-|ID
+|NUM_INTEGER:i RESULT = new IntegerLiteralExpression(i); :}
+|NUM_FLOAT:f RESULT = new FloatLiteralExpression(f); :}
+|STRG:s {: RESULT = new StringLiteralExpression(s); :}
+|ID:id {: 	Variable v = program.getVariable(id);
+			RESULT = new VariableExpression(v);
+		:}
 |LPAREN Expression RPAREN;
+Print ::= PRINT LPAREN ID RPAREN SEMI | PRINT LPAREN STRG RPAREN SEMI;
+Println ::= PRINTLINE LPAREN ID RPAREN SEMI | PRINTLN LPAREN STRG RPAREN SEMI;
 
 
  

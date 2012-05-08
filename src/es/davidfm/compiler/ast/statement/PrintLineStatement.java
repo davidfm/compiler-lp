@@ -26,48 +26,11 @@
 
 
 
-package es.davidfm.compiler.ast.expression;
+package es.davidfm.compiler.ast.statement;
 
 /**
  * 
  */
-public class BinaryExpression extends Expression {
-	
-	private String op;
-	private Expression left;
-	private Expression right;
-	
-	
-	public BinaryExpression(String type, String op, Expression left, Expression right){
-		
-		super(type);
-		this.op = op;
-		this.left = left;
-		this.right = right;
-				
-	}
-
-
-	public String getOp() {
-		return op;
-	}
-
-
-	public Expression getLeft() {
-		return left;
-	}
-
-
-	public Expression getRight() {
-		return right;
-	}
-	
-	
-	
-		
-	
-	
-	
-	
+public class PrintLineStatement extends Statement {
 
 }

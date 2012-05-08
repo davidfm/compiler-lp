@@ -31,6 +31,7 @@ package es.davidfm.compiler.ast.structure;
 import java.util.ArrayList;
 
 import es.davidfm.compiler.ast.statement.BlockStatement;
+import es.davidfm.compiler.ast.statement.Statement;
 
 /**
  * 
@@ -54,6 +55,7 @@ public class Program {
 	public void addVariable(Variable var){
 		
 		this.variables.add(var);
+		tos.addVariable(var);
 		
 	}
 	
@@ -82,6 +84,21 @@ public class Program {
 		return this.body;
 	}
 	
+	public boolean containsVariable(String id){
+		
+		return tos.exists(id);
+	}
 	
+	public Variable getVariable(String id){
+		
+		return tos.getVariable(id);
+	}
+	
+	
+	public void addToBody(Statement s){
+		
+		body.add(s);
+	
+	}
 
 }
