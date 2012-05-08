@@ -46,5 +46,10 @@ public class VariableExpression extends Expression {
 	public Variable getVariable() {
 		return variable;
 	}
+	
+	public String toString(){
+		
+		return variable.toString();
+	}
 
 }

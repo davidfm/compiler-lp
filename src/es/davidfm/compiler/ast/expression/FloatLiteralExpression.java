@@ -51,6 +51,11 @@ public class FloatLiteralExpression extends Expression {
 	}
 	
 	
+	public String toString(){
+		
+		return ""+value;
+	}
+	
 	
 	
 

@@ -53,5 +53,9 @@ public class BlockStatement {
 		
 		this.list.add(stm);
 	}
-
+	
+	public String toString(){
+		
+		return list.toString();
+	}
 }

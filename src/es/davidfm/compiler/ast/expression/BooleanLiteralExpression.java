@@ -50,6 +50,12 @@ public class BooleanLiteralExpression extends Expression {
 		return value;
 	}
 	
+	public String toString(){
+	
+		return ""+this.value;
+				
+	}
+	
 	
 	
 

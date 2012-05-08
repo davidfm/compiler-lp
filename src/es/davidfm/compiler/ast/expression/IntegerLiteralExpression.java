@@ -53,6 +53,12 @@ public class IntegerLiteralExpression extends Expression {
 		return value;
 	}
 	
+	public String toString(){
+		
+		return ""+value;
+		
+	}
+	
 	
 	
 

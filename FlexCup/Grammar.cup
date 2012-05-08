@@ -148,8 +148,7 @@ Assign ::= ID:id ASSIGN Expression:e SEMI
 			{: if (program.containsVariable(id)){
 				Variable v = program.getVariable(id);
 				AssignStatement a = new AssignStatement(id,e);
-			}
-			;
+			};
 		
 Type ::= INTEGER:i {: RESULT = new String("int"); :} 
 					|FLOAT {: RESULT = new String("float"); :} 

@@ -53,6 +53,12 @@ public class AssignStatement extends Statement {
 		return exp;
 	}
 	
+	public String toString(){
+		
+		String output = "=("+left+","+exp+")";
+		
+		return output;
+	}
 	
 	
 	

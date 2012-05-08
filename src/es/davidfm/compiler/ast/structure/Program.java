@@ -100,5 +100,16 @@ public class Program {
 		body.add(s);
 	
 	}
+	
+	
+	@Override
+	public String toString(){
+		String output = "";
+		
+		output = "(Program(VariablesList("+this.variables+")Body("+body+"))";
+		
+		
+		return output;
+	}
 
 }

@@ -83,7 +83,7 @@ public class Variable {
 
 	@Override
 	public String toString() {
-		return "Variable [type=" + type + ", name=" + name + "]";
+		return "Variable [Type=" + type + ", ID=" + name + "]";
 	}
 	
 	

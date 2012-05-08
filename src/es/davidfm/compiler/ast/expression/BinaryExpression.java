@@ -62,6 +62,11 @@ public class BinaryExpression extends Expression {
 		return right;
 	}
 	
+	public String toString(){
+		
+		return op+"("+left+","+right+")";
+	}
+	
 	
 	
 		
