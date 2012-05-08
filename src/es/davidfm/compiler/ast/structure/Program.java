@@ -106,7 +106,7 @@ public class Program {
 	public String toString(){
 		String output = "";
 		
-		output = "(Program(VariablesList("+this.variables+")Body("+body+"))";
+		output = "(Program\n\t(VariablesList("+this.variables+"\n\t(Body("+body+")\n)";
 		
 		
 		return output;

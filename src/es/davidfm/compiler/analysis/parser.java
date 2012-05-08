@@ -178,6 +178,7 @@ class CUP$parser$actions {
 	void end(){
 	
 		System.out.println(program);
+		System.out.println("=====Program ended====");
 	
 	}
 	
