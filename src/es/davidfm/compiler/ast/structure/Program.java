@@ -46,7 +46,7 @@ public class Program {
 	public Program(){
 		
 		this.variables = new ArrayList<Variable>();
-		this.body =	null;
+		this.body =	new BlockStatement();
 		this.tos = new TSymbols();
 		this.tos.addScope();
 	}

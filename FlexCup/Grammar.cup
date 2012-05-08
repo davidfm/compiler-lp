@@ -25,34 +25,39 @@ LICENSE:
 */
 
 import java_cup.runtime.*;
-import java.util.*;
 import java.io.*;
-import es.davidfm.compiler.AST.Structure.*;
+import es.davidfm.compiler.ast.structure.*;
+import es.davidfm.compiler.ast.expression.*;
+import es.davidfm.compiler.ast.statement.*;
 
 
 
 parser code{:
 
-	Lexer lexer;
-	String outputFile;
+	public static void main (String [] args) throws Exception{
+
+		if (args.length!=1)
+			System.out.println("Error. No file to process");
+		else{
+			try{
+				
+				Lexer lexer = new Lexer(new FileReader(args[0]));	
+				new parser(lexer).parse();
+
+			}catch(Exception e){
+				
+				System.out.println("Error");
+
+			}			
 	
-	
-	public SintacSem(Lexer lexer){
-	
-		super(lexer)
-		this.lexer = lexer;
-		outputFile="/myProgram.in";
-		
 	}
-	
-	
+}	
 
 
-:};
+:}
 
 
 
-scan with {:return lexer.next_token(); :};
 
 
 action code {:
@@ -65,14 +70,21 @@ action code {:
 	
 	}
 	
+	
+	void end(){
+	
+		System.out.println(program);
+	
+	}
+	
 
-}
 
 
 
 
 
-:};
+
+:}
 
 
 terminal String PLUS;
@@ -98,74 +110,91 @@ terminal String PRINTLINE;
 terminal String NUM_INTEGER;
 terminal String NUM_FLOAT;
 terminal String BOOL;
+terminal String ID;
 terminal String STRG;
 
-terminal String ID;
 
 
-non terminal Program Program,
-non terminal BlockStatement Body
-non terminal Statement Statement
-non terminal Declaration
-non terminal AssignStatement Assign
-non terminal String Type
-non terminal Expression Expression
+non terminal Program Program;
+non terminal Body;
+non terminal Statement Statement;
+non terminal Declaration;
+non terminal AssignStatement Assign;
 non terminal String Type;
-non terminal Print
-non terminal Println
+non terminal Expression Expression;
+//non terminal PrintStatement Print;
+//non terminal PrintLineStatement Println;
 
+
+
+
+precedence left STRG;
+precedence left NUM_INTEGER;
+precedence left NUM_FLOAT;
+precedence right ID;
 
 
 precedence left ASSIGN;
-precedence left PLUS, MINUS;
-precedence left TIMES, DIV;
+precedence left PLUS;
+precedence left MINUS;
+precedence left TIMES;
+precedence left DIV;
 precedence left LPAREN, RPAREN;
 
 start with Program;
 
-Program ::= {: System.out.println("Begining of the program");
-			init(); :}		
- 			MAIN LPAREN RPAREN LBRACE Body RBRACE;
- 			
-Body ::= 	{: program.setBody(new BlockStatement()); :}
-			Statement Body | Statement;
+Program ::= {: System.out.println("Beginning of the program");
+			init();
+			 :}		
+ 			MAIN LPAREN RPAREN LBRACE Body RBRACE
+			{: end(); :};
+
+		
+Body ::= Statement Body | Statement;
 			
 Statement ::= Declaration 
-			| Assign 
-			| Print 
-			| Println;
-
+			| Assign:a {: program.addToBody(a); :};
+//			| Print 
+//			| Println;
+	
 Declaration ::= Type:t ID:id SEMI
 				{: if (program.containsVariable(id)){
-					//error
+					System.out.println("error");
 					} else {
 						Variable v = new Variable(t,id);
 						program.addVariable(v);
 					}
+
+				:};
 					
 				
-Assign ::= ID:id ASSIGN Expression:e SEMI
-			{: if (program.containsVariable(id)){
-				Variable v = program.getVariable(id);
-				AssignStatement a = new AssignStatement(id,e);
-			};
-		
-Type ::= INTEGER:i {: RESULT = new String("int"); :} 
-					|FLOAT {: RESULT = new String("float"); :} 
-					|STRING {: RESULT = new String("String"); :} ;
-Expression ::= Expression PLUS Expression
-|Expression MINUS Expression
-|Expression TIMES Expression
-|Expression DIV Expression
-|NUM_INTEGER:i RESULT = new IntegerLiteralExpression(i); :}
-|NUM_FLOAT:f RESULT = new FloatLiteralExpression(f); :}
+Assign ::= ID:id2 ASSIGN Expression:e SEMI
+			{: if (program.containsVariable(id2)){
+				Variable v = program.getVariable(id2);
+				AssignStatement a = new AssignStatement(v,e);
+			} else {
+				System.out.println("error");
+			}
+
+			:};
+
+ 		
+Type ::= INTEGER {: RESULT = new String("int"); :}
+		|FLOAT {: RESULT = new String("float"); :} 
+		|STRING {: RESULT = new String("String"); :};
+
+Expression ::= Expression:e1 PLUS Expression:e2 {: RESULT = new BinaryExpression("prueba","+",e1,e2); :}
+|Expression:e1 MINUS Expression:e2 {: RESULT = new BinaryExpression("prueba","-",e1,e2); :}
+|Expression:e1 TIMES Expression:e2 {: RESULT = new BinaryExpression("prueba","*",e1,e2); :}
+|Expression:e1 DIV Expression:e2 {: RESULT = new BinaryExpression("prueba","/",e1,e2); :}	
+|NUM_INTEGER:i {: RESULT = new IntegerLiteralExpression(i); :}
+|NUM_FLOAT:f {: RESULT = new FloatLiteralExpression(f); :}
 |STRG:s {: RESULT = new StringLiteralExpression(s); :}
 |ID:id {: 	Variable v = program.getVariable(id);
 			RESULT = new VariableExpression(v);
 		:}
 |LPAREN Expression RPAREN;
-Print ::= PRINT LPAREN ID RPAREN SEMI | PRINT LPAREN STRG RPAREN SEMI;
-Println ::= PRINTLINE LPAREN ID RPAREN SEMI | PRINTLN LPAREN STRG RPAREN SEMI;
-
+//Print ::= PRINT LPAREN ID RPAREN SEMI | PRINT LPAREN STRG RPAREN SEMI;
+//Println ::= PRINTLINE LPAREN ID RPAREN SEMI | PRINTLINE LPAREN STRG RPAREN SEMI;
 
  

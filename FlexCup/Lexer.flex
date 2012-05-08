@@ -40,7 +40,7 @@ import java.io.IOException;
 
 %final
 
-%cupsym Symbol
+%cupsym sym
 %cup
 %char
 
@@ -54,13 +54,13 @@ import java.io.IOException;
 
 %{
 
-private comments = false;
+private boolean comments = false;
 
 private Symbol token(int token, Object lexeme){
 String tok = (String) lexeme;
 int line = yyline + 1;
 
-if token != (Symbol.EOF){
+if (token != (sym.EOF))
 CodeInfo.saveInfo(line, tok);
 return new Symbol(token, lexeme);
 }
@@ -76,8 +76,8 @@ return token(token, yytext());
 if (comments) {
 System.out.println("There are unclosed comments");
 System.exit(1);
-else{
-return token(Symbol.EOF);
+}else{
+return token(sym.EOF);
 }
 
 %eofval}
@@ -98,30 +98,30 @@ STRG="\"".+"\""
 <COMMENT1> "*/" {yybegin(YYINITIAL); comments=false;}
 <COMMENT1, COMMENT2> [^] {}
 
-<YYINITIAL> "+" {return token(Symbol.PLUS);}
-<YYINITIAL> "-" {return token(Symbol.MINUS);}
-<YYINITIAL> "*" {return token(Symbol.TIMES);}
-<YYINITIAL> "/" {return token(Symbol.DIV);}
-<YYINITIAL> "(" {return token(Symbol.LPAREN);}
-<YYINITIAL> ")" {return token(Symbol.RPAREN);}
-<YYINITIAL> "{" {return token(Symbol.LBRACE);}
-<YYINITIAL> "}" {return token(symbol.RBRACE);}
-<YYINITIAL> "int" {return token(Symbol.INTEGER);}
-<YYINITIAL> "float" {return token(Symbol.FLOAT):}
-<YYINITIAL> "boolean" {return token(Symbol.BOOLEAN);}
-<YYINITIAL> "String" {return token(Symbol.STRING);}
-<YYINITIAL> ";" {return token(Symbol.SEMI);}
-<YYINITIAL> "," {return token(Symbol.COMMA);}
-<YYINITIAL> "=" {return token(symbol.ASSIGN);}
-<YYINITIAL> "main" {return token(Symbol.MAIN);}
-<YYINITIAL> "print" {return token(Symbol.PRINT);}
-<YYINITIAL> "printline" {return token(Symbol.PRINTLINE);}
+<YYINITIAL> "+" {return token(sym.PLUS);}
+<YYINITIAL> "-" {return token(sym.MINUS);}
+<YYINITIAL> "*" {return token(sym.TIMES);}
+<YYINITIAL> "/" {return token(sym.DIV);}
+<YYINITIAL> "(" {return token(sym.LPAREN);}
+<YYINITIAL> ")" {return token(sym.RPAREN);}
+<YYINITIAL> "{" {return token(sym.LBRACE);}
+<YYINITIAL> "}" {return token(sym.RBRACE);}
+<YYINITIAL> "int" {return token(sym.INTEGER);}
+<YYINITIAL> "float" {return token(sym.FLOAT);}
+<YYINITIAL> "boolean" {return token(sym.BOOLEAN);}
+<YYINITIAL> "String" {return token(sym.STRING);}
+<YYINITIAL> ";" {return token(sym.SEMI);}
+<YYINITIAL> "," {return token(sym.COMMA);}
+<YYINITIAL> "=" {return token(sym.ASSIGN);}
+<YYINITIAL> "main" {return token(sym.MAIN);}
+<YYINITIAL> "print" {return token(sym.PRINT);}
+<YYINITIAL> "printline" {return token(sym.PRINTLINE);}
 
-<YYINITIAL> {NUM_INTEGER} {return token(Symbol.NUM_INTEGER);}
-<YYINITIAL> {NUM_FLOAT} {return token(Symbol.NUM_FLOAT);}
-<YYINITIAL> {BOOL} {return token(Symbol.BOOL);}
-<YYINITIAL> {ID} {return token(Symbol.ID);}
-<YYINITIAL> {STRG} {return token(Symbol.STRG);}
+<YYINITIAL> {NUM_INTEGER} {return token(sym.NUM_INTEGER);}
+<YYINITIAL> {NUM_FLOAT} {return token(sym.NUM_FLOAT);}
+<YYINITIAL> {BOOL} {return token(sym.BOOL);}
+<YYINITIAL> {ID} {return token(sym.ID);}
+<YYINITIAL> {STRG} {return token(sym.STRG);}
  
 <YYINITIAL> [^] {System.out.println("Error en linea: " + yyline + " columna: " + yycolumn + " ----> " + yytext());}
 
