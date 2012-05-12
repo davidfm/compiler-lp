@@ -29,24 +29,37 @@
 package es.davidfm.compiler.ast.expression;
 
 /**
+ * This class represents a boolean literal
  * 
  */
 public class BooleanLiteralExpression extends Expression {
 	
 	private boolean value;
 	
+	/**
+	 * Constructor with Btring input
+	 * @param lexeme
+	 */
 	public BooleanLiteralExpression(String lexeme){
 		super("boolean");
 		this.value = Boolean.parseBoolean(lexeme);
 	}
 	
+	/**
+	 * Constructor with boolean input
+	 * @param value
+	 */
 	public BooleanLiteralExpression(boolean value){
 		
 		super("boolean");
 		this.value = value;
 	}
 
-	public boolean isValue() {
+	/**
+	 * Returns true or false
+	 * @return
+	 */
+	public boolean getValue() {
 		return value;
 	}
 	
@@ -54,6 +67,14 @@ public class BooleanLiteralExpression extends Expression {
 	
 		return ""+this.value;
 				
+	}
+	
+	/**
+	 * This is a tree leaf
+	 */
+	public boolean isLeaf(){
+		
+		return true;
 	}
 	
 	

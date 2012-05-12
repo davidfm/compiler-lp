@@ -29,7 +29,7 @@
 package es.davidfm.compiler.ast.statement;
 
 /**
- * 
+ * This class represents a printline (Print + "\n") statement
  */
 public class PrintLineStatement extends Statement {
 

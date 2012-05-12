@@ -29,12 +29,16 @@
 package es.davidfm.compiler.ast.expression;
 
 /**
- * 
+ * This class represents an integer literal
  */
 public class IntegerLiteralExpression extends Expression {
 	
 	private int value;
 	
+	/**
+	 * Constructor with String input
+	 * @param lexeme
+	 */
 	public IntegerLiteralExpression(String lexeme){
 		
 		super("int");
@@ -42,13 +46,21 @@ public class IntegerLiteralExpression extends Expression {
 	}
 	
 	
+	/**
+	 * Constructor with Integer input
+	 * @param value
+	 */
 	public IntegerLiteralExpression(int value){
 		
 		super("int");
 		this.value = value;
 	}
 
-
+	
+	/**
+	 * Returns the value of the expression
+	 * @return value
+	 */
 	public int getValue() {
 		return value;
 	}
@@ -59,6 +71,13 @@ public class IntegerLiteralExpression extends Expression {
 		
 	}
 	
+	/**
+	 * This is a tree leaf
+	 */
+	public boolean isLeaf(){
+		
+		return true;
+	}
 	
 	
 

@@ -29,12 +29,16 @@
 package es.davidfm.compiler.ast.expression;
 
 /**
- * 
+ * This class represents a String literal expression
  */
 public class StringLiteralExpression extends Expression {
 	
 	private String value;
 	
+	/**
+	 * Constructor
+	 * @param lexeme
+	 */
 	public StringLiteralExpression(String lexeme){
 		
 		super("string");
@@ -42,5 +46,28 @@ public class StringLiteralExpression extends Expression {
 		
 		
 	}
+	
+	/**
+	 * Returns the value of the expression
+	 * @return value
+	 */
+	public String getValue(){
+		
+		return this.value;
+	}
+	
+public String toString(){
+		
+		return this.value;
+	}
+	
+	/**
+	 * This is a tree leaf
+	 */
+	public boolean isLeaf(){
+		
+		return true;
+	}
+	
 
 }

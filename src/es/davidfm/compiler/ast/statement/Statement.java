@@ -29,7 +29,7 @@
 package es.davidfm.compiler.ast.statement;
 
 /**
- * 
+ * Abstract superclass
  */
 public abstract class Statement {
 	

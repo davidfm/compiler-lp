@@ -29,9 +29,10 @@
 package es.davidfm.compiler.ast.expression;
 
 /**
- * 
+ * Abstract superclass
  */
 public abstract class Expression {
+	
 	
 	private String type;
 	
@@ -42,6 +43,16 @@ public abstract class Expression {
 
 	public String getType() {
 		return type;
+	}
+	
+	public void setType(String type){
+		
+		this.type = type;
+	}
+	
+	public boolean isLeaf(){
+		
+		return false;
 	}
 
 }

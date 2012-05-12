@@ -32,23 +32,37 @@ import es.davidfm.compiler.ast.expression.Expression;
 import es.davidfm.compiler.ast.structure.Variable;
 
 /**
- * 
+ * This class represents an Assign Statement
  */
 public class AssignStatement extends Statement {
 	
-	private Variable left;
-	private Expression exp;
+	private Variable left; //Variable to wich an expression is assigned
+	private Expression exp; //Expression assigned to the variable
 	
+	/**
+	 * Constructor
+	 * @param left
+	 * @param exp
+	 */
 	public AssignStatement(Variable left, Expression exp){
 		
+		this.sameType(left,exp);
 		this.left = left;
 		this.exp = exp;
 	}
 
+	/**
+	 * Returns the variable (lefthand of the assign statement)
+	 * @return left
+	 */
 	public Variable getLeft() {
 		return left;
 	}
-
+	
+	/**
+	 * Returns the expression (righthand of the assign statement)
+	 * @return
+	 */
 	public Expression getExp() {
 		return exp;
 	}
@@ -58,6 +72,23 @@ public class AssignStatement extends Statement {
 		String output = "=("+left+","+exp+")";
 		
 		return output;
+	}
+	
+	/**
+	 * Checks that the variable and the expression are of the same type
+	 * @param l
+	 * @param e
+	 */
+	private void sameType(Variable l, Expression e){
+		String t1 = l.getType();
+		String t2 = e.getType();
+		
+		if (!t1.equals(t2)){
+			
+			System.out.println("ERROR: You cannot assign a(n) " + t2 + " to a " + t1);
+			System.out.println("Analysis terminated");
+			System.exit(1);
+		}
 	}
 	
 	

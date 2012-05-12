@@ -31,24 +31,35 @@ package es.davidfm.compiler.ast.statement;
 import java.util.ArrayList;
 
 /**
- * 
+ * This class represents a group of statements.
+ * It is used as the body of the program, body of a loop, etc.
  */
 public class BlockStatement {
 	
-	private ArrayList<Statement> list;
+	private ArrayList<Statement> list; //List of statements
 	
 	
+	/**
+	 * Constructor.
+	 * A new list of statements is instantiated
+	 */
 	public BlockStatement(){
 		
 		this.list = new ArrayList<Statement>();
 	}
 
-
+	/**
+	 * Returns the statements contained in this block
+	 * @return list
+	 */
 	public ArrayList<Statement> getList() {
 		return list;
 	}
 	
-	
+	/**
+	 * Adds statement to the block
+	 * @param stm
+	 */
 	public void add(Statement stm){
 		
 		this.list.add(stm);

@@ -29,23 +29,35 @@
 package es.davidfm.compiler.ast.expression;
 
 /**
- * 
+ * This class represents a float literal
  */
 public class FloatLiteralExpression extends Expression {
 	
 	private float value;
 	
+	/**
+	 * Constructor with a string input
+	 * @param lexeme
+	 */
 	public FloatLiteralExpression(String lexeme){
 		
 		super("float");
 		this.value = Float.parseFloat(lexeme);
 	}
 	
+	/**
+	 * Constructor with a float input
+	 * @param value
+	 */
 	public FloatLiteralExpression(float value){
 		super("float");
 		this.value = value;
 	}
 
+	/**
+	 * Returns the value of the expression
+	 * @return value
+	 */
 	public float getValue() {
 		return value;
 	}
@@ -56,6 +68,14 @@ public class FloatLiteralExpression extends Expression {
 		return ""+value;
 	}
 	
+	/**
+	 * This is a tree leaf
+	 */
+	public boolean isLeaf(){
+		
+		return true;
+	}
+
 	
 	
 

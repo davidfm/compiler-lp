@@ -29,15 +29,27 @@
 package es.davidfm.compiler.ast.expression;
 
 /**
+ * This class represents a binary expression
  * 
  */
 public class BinaryExpression extends Expression {
 	
-	private String op;
-	private Expression left;
-	private Expression right;
+	
+	private String op;  //operator   
+	
+	private Expression left; //lefthand operand
+	
+	private Expression right; //righthand operand
 	
 	
+	
+	/**
+	 * Contructor. It receives the type of the expression, the operator and both left and righthand oeprands
+	 * @param type
+	 * @param op
+	 * @param left
+	 * @param right
+	 */
 	public BinaryExpression(String type, String op, Expression left, Expression right){
 		
 		super(type);
@@ -47,27 +59,54 @@ public class BinaryExpression extends Expression {
 				
 	}
 
-
+	
+	/**
+	 * Returns the operator
+	 * @return op
+	 */
 	public String getOp() {
 		return op;
 	}
 
-
+	
+	/**
+	 * Returns the lefthand expression
+	 * @return left
+	 */
 	public Expression getLeft() {
 		return left;
 	}
 
-
+	
+	/**
+	 * Returns the righthand expression
+	 * @return right
+	 */
 	public Expression getRight() {
 		return right;
 	}
 	
+	
+
+	@Override	
 	public String toString(){
 		
 		return op+"("+left+","+right+")";
 	}
 	
 	
+	/**
+	 * This is not a tree leaf. 
+	 * 
+	 */
+	public boolean isLeaf(){
+		
+		return false;
+	}
+
+	
+}
+	
 	
 		
 	
@@ -75,4 +114,4 @@ public class BinaryExpression extends Expression {
 	
 	
 
-}
+

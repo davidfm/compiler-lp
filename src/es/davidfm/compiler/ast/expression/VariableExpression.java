@@ -31,18 +31,27 @@ package es.davidfm.compiler.ast.expression;
 import es.davidfm.compiler.ast.structure.Variable;
 
 /**
- * 
+ * This class represents the expression of a variable
+ * to be used in operations 
  */
 public class VariableExpression extends Expression {
 	
 	Variable variable;
 	
+	/**
+	 * Constructor
+	 * @param var
+	 */
 	public VariableExpression(Variable var){
 		
 		super(var.getType());
 		this.variable = var;
 	}
-
+	
+	/**
+	 * 
+	 * @return variable
+	 */
 	public Variable getVariable() {
 		return variable;
 	}

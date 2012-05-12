@@ -193,7 +193,7 @@ Expression ::= Expression:e1 PLUS Expression:e2 {: RESULT = new BinaryExpression
 |ID:id {: 	Variable v = program.getVariable(id);
 			RESULT = new VariableExpression(v);
 		:}
-|LPAREN Expression RPAREN;
+|LPAREN Expression:e RPAREN {: RESULT = e :}  ;
 //Print ::= PRINT LPAREN ID RPAREN SEMI | PRINT LPAREN STRG RPAREN SEMI;
 //Println ::= PRINTLINE LPAREN ID RPAREN SEMI | PRINTLINE LPAREN STRG RPAREN SEMI;
 
