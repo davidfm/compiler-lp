@@ -1,4 +1,4 @@
-compilador-pl
+compiler-lp
 =============
 
-Práctica compilador procesadores del lenguaje
+Language Processors project
