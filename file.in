@@ -8,4 +8,7 @@ c = a+b;
 int d;
 d = 4;
 a = 28;
+printline(a);
+print(b);
+c = (d + 2);
 }

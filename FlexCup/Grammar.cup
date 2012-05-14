@@ -24,6 +24,8 @@ LICENSE:
 
 */
 
+package es.davidfm.compiler.analysis;
+
 import java_cup.runtime.*;
 import java.io.*;
 import es.davidfm.compiler.ast.structure.*;
@@ -122,8 +124,8 @@ non terminal Declaration;
 non terminal AssignStatement Assign;
 non terminal String Type;
 non terminal Expression Expression;
-//non terminal PrintStatement Print;
-//non terminal PrintLineStatement Println;
+non terminal PrintStatement Print;
+non terminal PrintLineStatement Println;
 
 
 
@@ -153,9 +155,9 @@ Program ::= {: System.out.println("Beginning of the program");
 Body ::= Statement Body | Statement;
 			
 Statement ::= Declaration 
-			| Assign:a {: program.addToBody(a); :};
-//			| Print 
-//			| Println;
+			| Assign:a {: program.addToBody(a); :}
+			| Print:p {: program.addToBody(p); :}
+			| Println:pl {: program.addToBody(pl); :};
 	
 Declaration ::= Type:t ID:id SEMI
 				{: if (program.containsVariable(id)){
@@ -183,18 +185,18 @@ Type ::= INTEGER {: RESULT = new String("int"); :}
 		|FLOAT {: RESULT = new String("float"); :} 
 		|STRING {: RESULT = new String("String"); :};
 
-Expression ::= Expression:e1 PLUS Expression:e2 {: RESULT = new BinaryExpression("prueba","+",e1,e2); :}
-|Expression:e1 MINUS Expression:e2 {: RESULT = new BinaryExpression("prueba","-",e1,e2); :}
-|Expression:e1 TIMES Expression:e2 {: RESULT = new BinaryExpression("prueba","*",e1,e2); :}
-|Expression:e1 DIV Expression:e2 {: RESULT = new BinaryExpression("prueba","/",e1,e2); :}	
+Expression ::= Expression:e1 PLUS Expression:e2 {: RESULT = new BinaryExpression(e1.getType(),"+",e1,e2); :}
+|Expression:e1 MINUS Expression:e2 {: RESULT = new BinaryExpression(e1.getType(),"-",e1,e2); :}
+|Expression:e1 TIMES Expression:e2 {: RESULT = new BinaryExpression(e1.getType(),"*",e1,e2); :}
+|Expression:e1 DIV Expression:e2 {: RESULT = new BinaryExpression(e1.getType(),"/",e1,e2); :}	
 |NUM_INTEGER:i {: RESULT = new IntegerLiteralExpression(i); :}
 |NUM_FLOAT:f {: RESULT = new FloatLiteralExpression(f); :}
 |STRG:s {: RESULT = new StringLiteralExpression(s); :}
 |ID:id {: 	Variable v = program.getVariable(id);
 			RESULT = new VariableExpression(v);
 		:}
-|LPAREN Expression:e RPAREN {: RESULT = e :}  ;
-//Print ::= PRINT LPAREN ID RPAREN SEMI | PRINT LPAREN STRG RPAREN SEMI;
-//Println ::= PRINTLINE LPAREN ID RPAREN SEMI | PRINTLINE LPAREN STRG RPAREN SEMI;
+|LPAREN Expression:e RPAREN {: RESULT = e; :}  ;
+Print ::= PRINT LPAREN ID:id RPAREN SEMI {: RESULT = new PrintStatement(program.getVariable(id)); :};
+Println ::= PRINTLINE LPAREN ID:id RPAREN SEMI {: RESULT = new PrintLineStatement(program.getVariable(id)); :};
 
  
