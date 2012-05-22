@@ -137,7 +137,7 @@ public class Program {
 			
 			boolean equals = o.getClass().toString().equals("class es.davidfm.compiler.ast.statement.AssignStatement");
 			
-			System.out.println(equals);
+		
 					
 			if (equals) {
 

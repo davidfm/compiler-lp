@@ -34,9 +34,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Stack;
 
-import es.davidfm.compiler.ast.statement.Statement;
+
+
 import es.davidfm.compiler.ast.structure.Program;
 
 /**
@@ -48,7 +48,7 @@ public class CodeGenerator {
 	private Program p;
 	private String name;
 	private PrintWriter file;
-	private ArrayList<Operation> opList;
+	
 	
 	
 	
