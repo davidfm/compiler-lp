@@ -50,7 +50,7 @@ public class CodeGenerator {
 	private PrintWriter file;
 	private ArrayList<Operation> opList;
 	
-	private static Stack<String> registers;
+	
 	
 	public CodeGenerator(Program p){
 		
@@ -79,52 +79,58 @@ public class CodeGenerator {
 		
 	}
 	
+	private void write(String text){
+		
+		file.print(text);
+		
+	}
+	
 	private void newLine(){
 		
 		file.println("");
 	}
 	
-	private void readOperations(){
-		
-		ArrayList test = new ArrayList();
-		
-		ArrayList<Statement> aux = p.getBody().getList();
-		
-		Iterator it = aux.iterator();
-		
-		while (it.hasNext()){
-			
-			Stack s = new Stack();
-			
-			Statement st = (Statement) it.next();
-			
-			s.push(st);
-			
-					
-		}
+
 		
 		
 		
 		
-		
-	}
+	
 	
 	public void generateAsm() throws IOException{
 		
 		openFile();
 		writeLine(".data");
-		writeLine(".text");
-		writeLine("\t.globl main");
-		writeLine("main: ");
 		
-		ArrayList<String> code = p.toCode();
+		ArrayList<String> code = p.stringToCode();
 		
 		Iterator<String> it = code.iterator();
+		
+		while (it.hasNext()){
+		
+			writeLine(it.next());
+			
+		}
+		
+		
+		writeLine(".text");
+		writeLine(".globl main");
+		newLine();
+		writeLine("main: ");
+		newLine();
+		
+		code = p.toCode();
+		
+		it = code.iterator();
 		
 		while (it.hasNext()){
 			
 			writeLine(it.next());
 		}
+		
+		newLine();
+		writeLine("li $v0, 10");
+		writeLine("syscall");
 		
 		
 		closeFile();		

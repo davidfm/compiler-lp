@@ -75,10 +75,10 @@ action code {:
 	}
 	
 	
-	void end(){
+	void end() throws IOException{
 	
-		System.out.println(program);
-		System.out.println(program.toCode());
+		CodeGenerator cg = new CodeGenerator(program);
+		cg.generateAsm();
 		
 	
 	}
@@ -129,7 +129,6 @@ non terminal AssignStatement Assign;
 non terminal String Type;
 non terminal Expression Expression;
 non terminal PrintStatement Print;
-non terminal PrintLineStatement Println;
 
 
 
@@ -160,16 +159,23 @@ Body ::= Statement Body | Statement;
 			
 Statement ::= Declaration 
 			| Assign:a {: program.addToBody(a); :}
-			| Print:p {: program.addToBody(p); :}
-			| Println:pl {: program.addToBody(pl); :};
+			| Print:p {: program.addToBody(p); :};
 	
 Declaration ::= Type:t ID:id SEMI
 				{: if (program.containsVariable(id)){
 					System.out.println("error");
 					} else {
+
+						if (!t.equals("String")){
 						Variable v = new Variable(t,id, memory);
 						memory+=4;
 						program.addVariable(v);
+
+						} else {
+							Variable v = new Variable(t,id, -1);
+							program.addVariable(v);
+						}
+							
 					}
 
 				:};
@@ -202,6 +208,5 @@ Expression ::= Expression:e1 PLUS Expression:e2 {: RESULT = new BinaryExpression
 		:}
 |LPAREN Expression:e RPAREN {: RESULT = e; :}  ;
 Print ::= PRINT LPAREN ID:id RPAREN SEMI {: RESULT = new PrintStatement(program.getVariable(id)); :};
-Println ::= PRINTLINE LPAREN ID:id RPAREN SEMI {: RESULT = new PrintLineStatement(program.getVariable(id)); :};
 
  

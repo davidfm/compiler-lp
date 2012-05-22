@@ -22,35 +22,58 @@
 	@license http://www.gnu.org/licenses
 	@copyright 2012 David Fernández
 	
-*/
-
-
+ */
 
 package es.davidfm.compiler.ast.statement;
 
-import es.davidfm.compiler.ast.structure.Variable;
+import java.util.ArrayList;
 
+import es.davidfm.compiler.ast.structure.Variable;
 
 /**
  * This class represents a print statement
  */
 public class PrintStatement extends Statement {
-	
+
 	Variable v;
-	
-	public PrintStatement(Variable v){
-		
+
+	public PrintStatement(Variable v) {
+
 		this.v = v;
-		
+
 	}
-	
+
 	@Override
-	public String toString(){
-		
-		return "PRINT("+(v)+")";
+	public String toString() {
+
+		return "PRINT(" + (v) + ")";
 	}
-	
+
+	public ArrayList<String> toCode() {
+
+		ArrayList<String> output = new ArrayList<String>();
+		
+		if (v.getType().equals("String")){
+			
+			output.add("li $v0, 4");
+			output.add("la $a0, "+v.getName());
+			output.add("syscall");
+			
+		} else if (v.getType().equals("int")){
+			
+			output.add("li $v0, 1");
+			output.add("lw $a0, "+v.getMemoryAddress()+"($gp)");
+			output.add("syscall");
+		} else {
+			
+			output.add("li $v0, 2");
+			output.add("lwc1 $f12, "+v.getMemoryAddress()+"($gp)");
+			output.add("syscall");
+		}
+		
+
+		return output;
+
+	}
+
 }
-
-
-

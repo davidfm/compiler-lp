@@ -22,9 +22,7 @@
 	@license http://www.gnu.org/licenses
 	@copyright 2012 David Fernández
 	
-*/
-
-
+ */
 
 package es.davidfm.compiler.ast.structure;
 
@@ -40,94 +38,123 @@ import es.davidfm.compiler.ast.statement.Statement;
  * 
  */
 public class Program {
-	
+
 	private ArrayList<Variable> variables;
 	private BlockStatement body;
 	private TSymbols tos;
-	
-	
-	public Program(){
-		
+
+	public Program() {
+
 		this.variables = new ArrayList<Variable>();
-		this.body =	new BlockStatement();
+		this.body = new BlockStatement();
 		this.tos = new TSymbols();
 		this.tos.addScope();
 	}
-	
-	
-	public void addVariable(Variable var){
-		
+
+	public void addVariable(Variable var) {
+
 		this.variables.add(var);
 		tos.addVariable(var);
-		
+
 	}
-	
-	public ArrayList<Variable> getVariables(){
-		
+
+	public ArrayList<Variable> getVariables() {
+
 		return this.variables;
 	}
-	
-	public void newScope(){
-		
+
+	public void newScope() {
+
 		this.tos.addScope();
 	}
-	
-	public void deleteScope(){
-		
+
+	public void deleteScope() {
+
 		this.tos.deleteScope();
 	}
-	
-	public void setBody(BlockStatement body){
-		
+
+	public void setBody(BlockStatement body) {
+
 		this.body = body;
 	}
-	
-	public BlockStatement getBody(){
-		
+
+	public BlockStatement getBody() {
+
 		return this.body;
 	}
-	
-	public boolean containsVariable(String id){
-		
+
+	public boolean containsVariable(String id) {
+
 		return tos.exists(id);
 	}
-	
-	public Variable getVariable(String id){
-		
+
+	public Variable getVariable(String id) {
+
 		return tos.getVariable(id);
 	}
-	
-	
-	public void addToBody(Statement s){
-		
+
+	public void addToBody(Statement s) {
+
 		body.add(s);
-	
+
 	}
-	
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		String output = "";
-		
-		output = "(Program\n\t(VariablesList("+this.variables+"\n\t(Body("+body+")\n)";
-		
-		
+
+		output = "(Program\n\t(VariablesList(" + this.variables + "\n\t(Body("
+				+ body + ")\n)";
+
 		return output;
 	}
-	
-	public ArrayList<String> toCode(){
-		
+
+	public ArrayList<String> toCode() {
+
 		ArrayList<String> output = new ArrayList<String>();
-		
+
 		Iterator it = body.getList().iterator();
-		
-		while (it.hasNext()){
-			
+
+		while (it.hasNext()) {
+
 			Statement s = (Statement) it.next();
 			output.addAll(s.toCode());
 		}
+
+		return output;
+	}
+
+	public ArrayList<String> stringToCode() {
+
+		ArrayList<String> output = new ArrayList<String>();
+
+		Iterator it = body.getList().iterator();
+
+		while (it.hasNext()) {
+
+			Object o = it.next();
+			
+			
+			boolean equals = o.getClass().toString().equals("class es.davidfm.compiler.ast.statement.AssignStatement");
+			
+			System.out.println(equals);
+					
+			if (equals) {
+
+				AssignStatement aux = (AssignStatement) o;
+				
+				
+				
+				if (aux.getLeft().getType().equals("String")) {
+					output.add(aux.stringToCode());
+
+				}
+
+			}
+		}
 		
 		return output;
+
 	}
 
 }

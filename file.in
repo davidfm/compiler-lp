@@ -1,13 +1,12 @@
 main() {
-int  a;
-float b;
-float c;
-float e;
-a = 5;
-b = 2.35;
-c = a+b;
-int d;
-d = 4;
-a = 32;
-e = (d + 2);
+String salida;
+salida = "El numero es el: ";
+
+
+float a;
+
+a = 5.723;
+
+print(salida);
+print(a);
 }

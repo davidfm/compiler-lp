@@ -114,13 +114,14 @@ public class AssignStatement extends Statement {
 
 			} else if (exp.getType().equals("float")) {
 
-				String aux = "swc1 $f0, " + left.getMemoryAddress() + "($gp)";
+				
 				output.addAll(exp.toCode());
-				output.add(aux);
+				output.add("lwc1 $f0, " + exp.getMemoryAddress()+"($gp)");
+				output.add("swc1 $f0, " + left.getMemoryAddress() + "($gp)");
 
 			}
 
-		} else {
+		} else if (left.getType().equals("float")){
 			
 			output.addAll(exp.toCode());
 			output.add("lw $t0, " + exp.getMemoryAddress() + "($gp)");
@@ -131,6 +132,12 @@ public class AssignStatement extends Statement {
 		}
 
 		return output;
+	}
+	
+	public String stringToCode(){
+		
+			
+		return left.getName() + ":\t.asciiz " + exp.toCode().get(0);
 	}
 
 }
