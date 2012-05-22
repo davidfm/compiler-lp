@@ -142,11 +142,88 @@ public class BinaryExpression extends Expression {
 		ArrayList<String> output = new ArrayList<String>();
 		output.addAll(left.toCode());
 		output.addAll(right.toCode());
+		char operator = op.charAt(0);
+		
+		if (this.getType().equals("int")){
 		output.add("lw $t0, "+left.getMemoryAddress()+"($gp)");
 		output.add("lw $t1, "+right.getMemoryAddress()+"($gp)");
-		output.add("add $t0, $t0, $t1");
+		
+		
+		switch(operator){
+		
+		case('+'):
+		
+			output.add("add $t0, $t0, $t1");
+			break;
+			
+		case ('-'):
+			
+			output.add("sub $t0, $t0, $t1");
+		break;
+		
+		case('*'):
+			
+			output.add("mul $t0, $t0, $t1");
+			break;
+		
+		case('/'):
+			
+			output.add("div $t0, $t0, $t1");
+			break;			
+		
+		}
+		
+		
 		output.add("sw $t0, " + this.getMemoryAddress()+("($gp)"));
 		
+		} else {
+			
+			if (left.getType().equals("int")){
+				
+				output.add("lw $t0, "+left.getMemoryAddress()+"($gp)");
+				output.add("mtc1 $t0, $f6");
+				output.add("cvt.s.w $f2, $f6");
+				output.add("lwc1 $f4, "+right.getMemoryAddress()+"($gp)" );
+				
+			} else if (right.getType().equals("int")){
+				
+				output.add("lwc1 $f2, "+left.getMemoryAddress()+"($gp)" );
+				output.add("lw $t0, "+right.getMemoryAddress()+"($gp)");
+				output.add("mtc1 $t0, $f6");
+				output.add("cvt.s.w $f4, $f6");
+				
+			} else {
+				output.add("lwc1 $f2, "+left.getMemoryAddress()+"($gp)" );
+				output.add("lwc1 $f4, "+right.getMemoryAddress()+"($gp)" );
+			}
+			
+			switch(operator){
+			
+			case('+'):
+			
+				output.add("add.s $f2, $f2, $f4");
+				break;
+				
+			case ('-'):
+				
+				output.add("sub.s $f2, $f2, $f4");
+			break;
+			
+			case('*'):
+				
+				output.add("mul.s $f2, $f2, $f4");
+				break;
+			
+			case('/'):
+				
+				output.add("div.s $f2, $f2, $f4");
+				break;			
+			
+			}
+			
+			output.add("swc1 $f2, "+this.getMemoryAddress()+"($gp)");
+			
+		}
 		
 		
 		return output;

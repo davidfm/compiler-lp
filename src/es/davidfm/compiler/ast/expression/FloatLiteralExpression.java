@@ -85,8 +85,8 @@ public class FloatLiteralExpression extends Expression {
 		
 		ArrayList<String> output = new ArrayList<String>();
 		
-		output.add("li.s $f0, "+value);
-		output.add("swc1 $f0, "+this.getMemoryAddress()+"($gp)");
+		output.add("li.s $f2, "+value);
+		output.add("swc1 $f2, "+this.getMemoryAddress()+"($gp)");
 		
 		return output;
 		

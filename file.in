@@ -1,12 +1,13 @@
 main() {
 int  a;
-int b;
-int c;
+float b;
+float c;
+float e;
 a = 5;
-b = 2;
-c = a+b +4+5 + b+a;
+b = 2.35;
+c = a+b;
 int d;
 d = 4;
 a = 32;
-c = (d + 2);
+e = (d + 2);
 }

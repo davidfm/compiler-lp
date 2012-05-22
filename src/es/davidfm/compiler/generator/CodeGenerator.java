@@ -117,14 +117,20 @@ public class CodeGenerator {
 		writeLine("\t.globl main");
 		writeLine("main: ");
 		
+		ArrayList<String> code = p.toCode();
+		
+		Iterator<String> it = code.iterator();
+		
+		while (it.hasNext()){
+			
+			writeLine(it.next());
+		}
+		
 		
 		closeFile();		
 	}
 	
-	public static Stack<String> registers(){
-		
-		return registers;
-	}
+	
 	
 
 
