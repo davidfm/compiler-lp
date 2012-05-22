@@ -115,7 +115,7 @@ STRG="\"".+"\""
 <YYINITIAL> "=" {return token(sym.ASSIGN);}
 <YYINITIAL> "main" {return token(sym.MAIN);}
 <YYINITIAL> "print" {return token(sym.PRINT);}
-<YYINITIAL> "printline" {return token(sym.PRINTLINE);}
+
 
 <YYINITIAL> {NUM_INTEGER} {return token(sym.NUM_INTEGER);}
 <YYINITIAL> {NUM_FLOAT} {return token(sym.NUM_FLOAT);}
