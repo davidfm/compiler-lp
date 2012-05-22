@@ -28,21 +28,31 @@
 
 package es.davidfm.compiler.ast.expression;
 
+import java.util.ArrayList;
+import java.util.Stack;
+
+import es.davidfm.compiler.generator.CodeGenerator;
+
+
+
+
 /**
  * This class represents an integer literal
  */
 public class IntegerLiteralExpression extends Expression {
 	
 	private int value;
+	private int memoryAddress;
 	
 	/**
 	 * Constructor with String input
 	 * @param lexeme
 	 */
-	public IntegerLiteralExpression(String lexeme){
+	public IntegerLiteralExpression(String lexeme, int memoryAddress){
 		
 		super("int");
 		this.value = Integer.parseInt(lexeme);
+		this.memoryAddress = memoryAddress;
 	}
 	
 	
@@ -79,6 +89,25 @@ public class IntegerLiteralExpression extends Expression {
 		return true;
 	}
 	
+	
+	public ArrayList<String> toCode(){
+		
+		ArrayList<String> output = new ArrayList<String>();
+		
+		output.add("li $t0, "+this.getValue());
+		output.add("sw $t0, "+this.getMemoryAddress()+"($gp)");
+		
+				
+		return output;
+		
+	}
+	
+public int getMemoryAddress(){
+		
+		return this.memoryAddress;
+	}
+	
+
 	
 
 }

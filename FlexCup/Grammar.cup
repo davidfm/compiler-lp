@@ -31,6 +31,7 @@ import java.io.*;
 import es.davidfm.compiler.ast.structure.*;
 import es.davidfm.compiler.ast.expression.*;
 import es.davidfm.compiler.ast.statement.*;
+import es.davidfm.compiler.generator.*;
 
 
 
@@ -65,6 +66,7 @@ parser code{:
 action code {:
 
 	Program program;
+	int memory = 0;
 	
 	void init(){
 	
@@ -76,6 +78,8 @@ action code {:
 	void end(){
 	
 		System.out.println(program);
+		System.out.println(program.toCode());
+		
 	
 	}
 	
@@ -163,7 +167,8 @@ Declaration ::= Type:t ID:id SEMI
 				{: if (program.containsVariable(id)){
 					System.out.println("error");
 					} else {
-						Variable v = new Variable(t,id);
+						Variable v = new Variable(t,id, memory);
+						memory+=4;
 						program.addVariable(v);
 					}
 
@@ -185,12 +190,12 @@ Type ::= INTEGER {: RESULT = new String("int"); :}
 		|FLOAT {: RESULT = new String("float"); :} 
 		|STRING {: RESULT = new String("String"); :};
 
-Expression ::= Expression:e1 PLUS Expression:e2 {: RESULT = new BinaryExpression(e1.getType(),"+",e1,e2); :}
-|Expression:e1 MINUS Expression:e2 {: RESULT = new BinaryExpression(e1.getType(),"-",e1,e2); :}
-|Expression:e1 TIMES Expression:e2 {: RESULT = new BinaryExpression(e1.getType(),"*",e1,e2); :}
-|Expression:e1 DIV Expression:e2 {: RESULT = new BinaryExpression(e1.getType(),"/",e1,e2); :}	
-|NUM_INTEGER:i {: RESULT = new IntegerLiteralExpression(i); :}
-|NUM_FLOAT:f {: RESULT = new FloatLiteralExpression(f); :}
+Expression ::= Expression:e1 PLUS Expression:e2 {: RESULT = new BinaryExpression("+",e1,e2,memory); memory+=4; :}
+|Expression:e1 MINUS Expression:e2 {: RESULT = new BinaryExpression("-",e1,e2,memory); memory+=4; :}
+|Expression:e1 TIMES Expression:e2 {: RESULT = new BinaryExpression("*",e1,e2,memory); memory+=4; :}
+|Expression:e1 DIV Expression:e2 {: RESULT = new BinaryExpression("/",e1,e2,memory); memory+=4; :}	
+|NUM_INTEGER:i {: RESULT = new IntegerLiteralExpression(i, memory); memory+=4; :}
+|NUM_FLOAT:f {: RESULT = new FloatLiteralExpression(f, memory); memory+=4; :}
 |STRG:s {: RESULT = new StringLiteralExpression(s); :}
 |ID:id {: 	Variable v = program.getVariable(id);
 			RESULT = new VariableExpression(v);

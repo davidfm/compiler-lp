@@ -28,6 +28,9 @@
 
 package es.davidfm.compiler.ast.expression;
 
+import java.util.ArrayList;
+
+
 /**
  * This class represents a binary expression
  * 
@@ -41,6 +44,8 @@ public class BinaryExpression extends Expression {
 	
 	private Expression right; //righthand operand
 	
+	private int memoryAddress;
+	
 	
 	
 	/**
@@ -50,13 +55,36 @@ public class BinaryExpression extends Expression {
 	 * @param left
 	 * @param right
 	 */
-	public BinaryExpression(String type, String op, Expression left, Expression right){
+	public BinaryExpression(String op, Expression left, Expression right, int memoryAddress){
 		
-		super(type);
+		super("");
 		this.op = op;
 		this.left = left;
 		this.right = right;
+		this.memoryAddress = memoryAddress;
+		
+		if (left.getType().equals(right.getType())){
+			
+			super.setType(left.getType());
+			
+			if (super.getType().equals("String")){
 				
+				System.out.println("Error, you cannot operate strings");
+				System.exit(1);
+				
+			}
+			
+			
+		} else if (left.getType().equals("int") && right.getType().equals("float") 
+				|| left.getType().equals("float") && right.getType().equals("int")){
+			
+			super.setType("float");
+			
+		} else {
+			
+			System.out.println("Error");
+			System.exit(1);
+		}
 	}
 
 	
@@ -103,6 +131,28 @@ public class BinaryExpression extends Expression {
 		
 		return false;
 	}
+	
+	public int getMemoryAddress(){
+		
+		return this.memoryAddress;
+	}
+	
+	public ArrayList<String> toCode(){
+		
+		ArrayList<String> output = new ArrayList<String>();
+		output.addAll(left.toCode());
+		output.addAll(right.toCode());
+		output.add("lw $t0, "+left.getMemoryAddress()+"($gp)");
+		output.add("lw $t1, "+right.getMemoryAddress()+"($gp)");
+		output.add("add $t0, $t0, $t1");
+		output.add("sw $t0, " + this.getMemoryAddress()+("($gp)"));
+		
+		
+		
+		return output;
+		
+	}
+
 
 	
 }

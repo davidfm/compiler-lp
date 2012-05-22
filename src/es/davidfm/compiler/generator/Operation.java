@@ -26,77 +26,26 @@
 
 
 
-package es.davidfm.compiler.ast.structure;
+package es.davidfm.compiler.generator;
 
 /**
  * 
  */
-public class Variable {
+public class Operation {
 	
-	private String type;
 	private String name;
-	private int memoryAddress;
+	private String type;
+	private String op1;
+	private String op2;
+	private String result;
 	
-	
-	public Variable(String type, String name, int memoryAddress){
+	public Operation(String name, String type, String op1, String op2, String result ){
 		
-		this.type = type;
 		this.name = name;
-		this.memoryAddress = memoryAddress;
-		
-	}
-	
-	
-
-
-	public String getType() {
-		return type;
-	}
-
-
-
-
-	public void setType(String type) {
 		this.type = type;
-	}
-
-
-
-
-	public String getName() {
-		return name;
-	}
-
-
-
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	
-
-	public boolean equals(String name){
+		this.op1 = op1;
+		this.op2 = op2;
 		
-		return this.name.equals(name);
 	}
-	
-	public int getMemoryAddress(){
-		
-		return this.memoryAddress;
-	}
-	
-
-
-	@Override
-	public String toString() {
-		return "Variable [Type=" + type + ", ID=" + name + " Address= " + memoryAddress + "]";
-	}
-	
-	
-
-	
-	
-	
 
 }

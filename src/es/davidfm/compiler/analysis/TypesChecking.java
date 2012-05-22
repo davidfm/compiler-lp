@@ -26,69 +26,53 @@
 
 
 
-package es.davidfm.compiler.ast.expression;
+package es.davidfm.compiler.analysis;
 
-import java.util.ArrayList;
-
+import es.davidfm.compiler.ast.expression.BinaryExpression;
+import es.davidfm.compiler.ast.expression.Expression;
 import es.davidfm.compiler.ast.structure.Variable;
-
+import es.davidfm.compiler.ast.statement.AssignStatement;
 
 /**
- * This class represents the expression of a variable
- * to be used in operations 
+ * 
  */
-public class VariableExpression extends Expression {
+public class TypesChecking {
 	
-	private Variable variable;
-	private int memoryAddress;
-	
-	/**
-	 * Constructor
-	 * @param var
-	 */
-	public VariableExpression(Variable var){
+	/*public static AssignStatement (Variable v, Expression e){
 		
-		super(var.getType());
-		this.variable = var;
-		this.memoryAddress = variable.getMemoryAddress();
+		if (v.getType().equals("int") && e.getType().equals("String")){
+				
+			System.out.println("ERROR: You cannot assign a String to an integer");
+			System.exit(1);
+			return null;
+			
+		} else if (v.getType().equals("float") && e.getType().equals("String")){
+			
+			System.out.println("ERROR: You cannot assign a String to an integer");
+			System.exit(1);
+			return null;
+			
+		} else if (v.getType()e.equals("int") && )
 	}
-	
-	/**
-	 * 
-	 * @return variable
-	 */
-	public Variable getVariable() {
-		return variable;
-	}
+*/
 	
 
 	
-	public String toString(){
-		
-		return variable.toString();
-	}
+/*	public BinaryExpression binaryIntFloat(String type, Expression left, Expression right){
 	
-	public boolean isLeaf(){
+		BinaryExpression output; 
+		BinaryExpression auxLeft;
+		BinaryExpression auxRight;
 		
-		return true;
+		if (left.isLeaf() && right.isLeaf())
+		
+		
+		
+		
 	}
-	
-	public ArrayList<String> toCode(){
-		
-		ArrayList<String> output = new ArrayList<String>();
-		
-//		if (variable.getType().equals("int")){
-//			
-//			//output.add("lw $t0, "+ variable.getMemoryAddress()+"($gp)");
-//		}
-		
-		return output;
-	}
-	
-	public int getMemoryAddress(){
-		
-		return this.memoryAddress;
-	}
+	*/
 
-
+	
+	
+	
 }

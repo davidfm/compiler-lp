@@ -28,6 +28,10 @@
 
 package es.davidfm.compiler.ast.expression;
 
+import java.util.ArrayList;
+
+
+
 /**
  * This class represents a boolean literal
  * 
@@ -77,6 +81,28 @@ public class BooleanLiteralExpression extends Expression {
 		return true;
 	}
 	
+	public ArrayList<String> toCode(){
+		
+		ArrayList<String> output = new ArrayList<String>();
+		
+		output.add(""+value);
+		
+		return output;
+		
+	}
+
+	/* (non-Javadoc)
+	 * @see es.davidfm.compiler.ast.expression.Expression#getType()
+	 */
+	@Override
+	public String getType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+	
+
 	
 	
 

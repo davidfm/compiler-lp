@@ -28,10 +28,17 @@
 
 package es.davidfm.compiler.ast.statement;
 
+import java.util.ArrayList;
+
 /**
  * Abstract superclass
  */
 public abstract class Statement {
 	
-	
+
+
+	/**
+	 * @return
+	 */
+	public abstract ArrayList<String> toCode();
 }

@@ -28,21 +28,26 @@
 
 package es.davidfm.compiler.ast.expression;
 
+import java.util.ArrayList;
+
+
 /**
  * This class represents a float literal
  */
 public class FloatLiteralExpression extends Expression {
 	
 	private float value;
+	private int memoryAddress;
 	
 	/**
 	 * Constructor with a string input
 	 * @param lexeme
 	 */
-	public FloatLiteralExpression(String lexeme){
+	public FloatLiteralExpression(String lexeme, int memoryAddress){
 		
 		super("float");
 		this.value = Float.parseFloat(lexeme);
+		this.memoryAddress = memoryAddress;
 	}
 	
 	/**
@@ -74,6 +79,22 @@ public class FloatLiteralExpression extends Expression {
 	public boolean isLeaf(){
 		
 		return true;
+	}
+	
+	public ArrayList<String> toCode(){
+		
+		ArrayList<String> output = new ArrayList<String>();
+		
+		output.add("li.s $f0, "+value);
+		output.add("swc1 $f0, "+this.getMemoryAddress()+"($gp)");
+		
+		return output;
+		
+	}
+	
+	public int getMemoryAddress(){
+		
+		return this.memoryAddress;
 	}
 
 	

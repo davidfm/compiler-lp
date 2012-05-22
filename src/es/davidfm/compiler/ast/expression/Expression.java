@@ -28,6 +28,8 @@
 
 package es.davidfm.compiler.ast.expression;
 
+import java.util.ArrayList;
+
 /**
  * Abstract superclass
  */
@@ -35,14 +37,16 @@ public abstract class Expression {
 	
 	
 	private String type;
+	private int memoryAddress;
 	
 	public Expression(String type){
 		
 		this.type = type;
 	}
 
-	public String getType() {
-		return type;
+	public String getType(){
+		
+		return this.type;
 	}
 	
 	public void setType(String type){
@@ -50,9 +54,16 @@ public abstract class Expression {
 		this.type = type;
 	}
 	
-	public boolean isLeaf(){
+	public void setMemoryAddress(int m){
 		
-		return false;
+		this.memoryAddress = m;
 	}
-
+	
+	public int getMemoryAddress(){
+		
+		return this.memoryAddress;
+	}
+	
+	public abstract boolean isLeaf();
+	public abstract ArrayList<String> toCode();
 }

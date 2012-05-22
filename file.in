@@ -1,14 +1,12 @@
 main() {
-int a;
+int  a;
 int b;
 int c;
-a = 1;
+a = 5;
 b = 2;
-c = a+b;
+c = a+b +4+5 + b+a;
 int d;
 d = 4;
-a = 28;
-printline(a);
-print(b);
+a = 32;
 c = (d + 2);
 }

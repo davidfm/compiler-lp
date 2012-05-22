@@ -84,8 +84,8 @@ return token(sym.EOF);
 
 
 NUM_INTEGER=[0-9]+
-NUM_FLOAT=[0.9]="."[0-9]+
-BOOL= ("True"|"False")
+NUM_FLOAT=[0-9]+\.[0-9]+
+BOOL= ("true"|"false")
 ID=[a-zA-Z]([a-zA-Z0-9]|"_")*
 STRG="\"".+"\""
 %%

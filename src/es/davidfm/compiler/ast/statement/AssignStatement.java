@@ -28,8 +28,11 @@
 
 package es.davidfm.compiler.ast.statement;
 
+import java.util.ArrayList;
+
 import es.davidfm.compiler.ast.expression.Expression;
 import es.davidfm.compiler.ast.structure.Variable;
+
 
 /**
  * This class represents an Assign Statement
@@ -91,6 +94,32 @@ public class AssignStatement extends Statement {
 		}
 	}
 	
+	@Override
+	public ArrayList<String> toCode(){
+		
+		ArrayList<String> output = new ArrayList<String>();
+		
+		if (exp.getType().equals("int")){
+			
+			output.addAll(exp.toCode());
+			output.add("lw $t0, "+exp.getMemoryAddress()+"($gp)");
+			output.add("sw $t0, "+left.getMemoryAddress()+"($gp)");
+			
+			
+		} else if (exp.getType().equals("float")){
+			
+			
+			String aux = "swvc1 $f0, "+left.getMemoryAddress()+"($gp)";
+			output.addAll(exp.toCode());
+			output.add(aux);
+			output.add("null");
+		}
+		
+		
+		return output;
+	}
+	
+
 	
 	
 

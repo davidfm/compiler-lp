@@ -28,6 +28,10 @@
 
 package es.davidfm.compiler.ast.expression;
 
+import java.util.ArrayList;
+
+
+
 /**
  * This class represents a String literal expression
  */
@@ -69,5 +73,14 @@ public String toString(){
 		return true;
 	}
 	
+	public ArrayList<String> toCode(){
+		
+		ArrayList<String> output = new ArrayList<String>();
+		
+		output.add(""+value);
+		
+		return output;
+		
+	}
 
 }

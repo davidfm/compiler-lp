@@ -30,6 +30,9 @@ package es.davidfm.compiler.ast.structure;
 
 import java.util.ArrayList;
 
+import java.util.Iterator;
+
+import es.davidfm.compiler.ast.statement.AssignStatement;
 import es.davidfm.compiler.ast.statement.BlockStatement;
 import es.davidfm.compiler.ast.statement.Statement;
 
@@ -108,6 +111,21 @@ public class Program {
 		
 		output = "(Program\n\t(VariablesList("+this.variables+"\n\t(Body("+body+")\n)";
 		
+		
+		return output;
+	}
+	
+	public ArrayList<String> toCode(){
+		
+		ArrayList<String> output = new ArrayList<String>();
+		
+		Iterator it = body.getList().iterator();
+		
+		while (it.hasNext()){
+			
+			Statement s = (Statement) it.next();
+			output.addAll(s.toCode());
+		}
 		
 		return output;
 	}
