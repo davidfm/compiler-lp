@@ -73,14 +73,7 @@ public class FloatLiteralExpression extends Expression {
 		return ""+value;
 	}
 	
-	/**
-	 * This is a tree leaf
-	 */
-	public boolean isLeaf(){
-		
-		return true;
-	}
-	
+
 	public ArrayList<String> toCode(){
 		
 		ArrayList<String> output = new ArrayList<String>();

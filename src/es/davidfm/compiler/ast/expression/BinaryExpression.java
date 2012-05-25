@@ -123,14 +123,7 @@ public class BinaryExpression extends Expression {
 	}
 	
 	
-	/**
-	 * This is not a tree leaf. 
-	 * 
-	 */
-	public boolean isLeaf(){
-		
-		return false;
-	}
+
 	
 	public int getMemoryAddress(){
 		

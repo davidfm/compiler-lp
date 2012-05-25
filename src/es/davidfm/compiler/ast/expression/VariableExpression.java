@@ -68,19 +68,14 @@ public class VariableExpression extends Expression {
 		return variable.toString();
 	}
 	
-	public boolean isLeaf(){
-		
-		return true;
-	}
-	
+
+	/**
+	 * Variable to code. In this case, an empty list is returned.
+	 */
 	public ArrayList<String> toCode(){
 		
 		ArrayList<String> output = new ArrayList<String>();
 		
-//		if (variable.getType().equals("int")){
-//			
-//			//output.add("lw $t0, "+ variable.getMemoryAddress()+"($gp)");
-//		}
 		
 		return output;
 	}

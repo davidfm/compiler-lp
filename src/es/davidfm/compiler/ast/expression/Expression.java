@@ -64,6 +64,6 @@ public abstract class Expression {
 		return this.memoryAddress;
 	}
 	
-	public abstract boolean isLeaf();
+	
 	public abstract ArrayList<String> toCode();
 }

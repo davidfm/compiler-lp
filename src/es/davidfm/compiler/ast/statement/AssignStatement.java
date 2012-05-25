@@ -87,11 +87,6 @@ public class AssignStatement extends Statement {
 	 */
 	private void sameType(Variable l, Expression e) {
 		
-	if (l.getName().equals("d")){
-			
-			System.out.println(l.getType());
-			System.out.println(e.getType());
-		}
 		
 		String t1 = l.getType();
 		String t2 = e.getType();

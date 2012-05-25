@@ -49,39 +49,59 @@ public class Variable {
 	
 	
 
-
+	/**
+	 * Returns the type of the variable
+	 * @return type
+	 */
 	public String getType() {
 		return type;
 	}
 
 
 
-
+	/**
+	 * Sets the type of the variable
+	 * @param type
+	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 
 
 
-
+	/**
+	 * Returns the ID of the variable
+	 * @return name
+	 */
 	public String getName() {
 		return name;
 	}
 
 
 
-
+	/**
+	 * Sets the ID of the variable
+	 * @param name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 	
 	
-
+	/**
+	 * Check if two variables have the same name
+	 * @param name
+	 * @return true if both names are the same
+	 */
 	public boolean equals(String name){
 		
 		return this.name.equals(name);
 	}
 	
+	/**
+	 * Returns the memory address where the content of the variable is stored
+	 * @return memoryAddress
+	 */
 	public int getMemoryAddress(){
 		
 		return this.memoryAddress;

@@ -73,13 +73,7 @@ public class BooleanLiteralExpression extends Expression {
 				
 	}
 	
-	/**
-	 * This is a tree leaf
-	 */
-	public boolean isLeaf(){
-		
-		return true;
-	}
+
 	
 	public ArrayList<String> toCode(){
 		
