@@ -46,9 +46,7 @@ public class AssignStatement extends Statement {
 	 * @param exp
 	 */
 	public AssignStatement(Variable left, Expression exp) {
-		
-	
-		
+
 		this.sameType(left, exp);
 		this.left = left;
 		this.exp = exp;
@@ -95,16 +93,45 @@ public class AssignStatement extends Statement {
 		if (!t1.equals(t2)) {
 			
 		
-			if (t1.equals("int") && t2.equals("float") || t1.equals("int") && t2.equals("String")
-					|| t1.equals("float") && t2.equals("String")) {
+			if (t1.equals("int") && t2.equals("float")){
 				
-				
-				System.out.println("ERROR: You cannot assign a(n) " + t2
-						+ " to a(n) " + t1);
+				System.out.println("ERROR: You cannot assign a " + t2
+						+ " to an " + t1);
 				System.out.println("Analysis terminated");
 				System.exit(1);
-			} 
+				
+			} else if (t1.equals("int") && t2.equals("String")){
+					
+					System.out.println("ERROR: You cannot assign a " + t2
+							+ " to an " + t1);
+					System.out.println("Analysis terminated");
+					System.exit(1);
+			} else if (t1.equals("float") && t2.equals("String")){
+				
+				System.out.println("ERROR: You cannot assign a " + t2
+						+ " to a " + t1);
+				System.out.println("Analysis terminated");
+				System.exit(1);
+		}else if (t1.equals("String")){
+			
+			if (t2.equals("int")){
+			
+			System.out.println("ERROR: You cannot assign an " + t2
+					+ " to a " + t1);
+			
+			} else {
+				System.out.println("ERROR: You cannot assign a " + t2
+						+ " to a " + t1);
+				
+			}
+			System.out.println("Analysis terminated");
+			System.exit(1);
+	}
+				
+			
+			 
 		}
+		
 	}
 
 	@Override
@@ -112,7 +139,6 @@ public class AssignStatement extends Statement {
 
 		ArrayList<String> output = new ArrayList<String>();
 
-		
 		if (left.getType().equals(exp.getType())) {
 
 			if (exp.getType().equals("int")) {
@@ -123,48 +149,41 @@ public class AssignStatement extends Statement {
 
 			} else if (exp.getType().equals("float")) {
 
-				
 				output.addAll(exp.toCode());
-				output.add("lwc1 $f0, " + exp.getMemoryAddress()+"($gp)");
+				output.add("lwc1 $f0, " + exp.getMemoryAddress() + "($gp)");
 				output.add("swc1 $f0, " + left.getMemoryAddress() + "($gp)");
 
-			} else if (exp.getType().equals("String")){
-				
+			} else if (exp.getType().equals("String")) {
+
 				String aux = exp.toCode().get(0);
-				output.add("la $s0, "+left.getName());
-				
-							
-				for (int i=0; i<aux.length(); i++){
-					
+				output.add("la $s0, " + left.getName());
+
+				for (int i = 0; i < aux.length(); i++) {
+
 					String notThis = "\"";
-					
-					if (aux.charAt(i)!=notThis.charAt(0)){
-					output.add("li $t0, '"+aux.charAt(i)+"'");
-					output.add("sb $t0, ($s0)");
-					output.add("addi $s0, $s0, 1");
+
+					if (aux.charAt(i) != notThis.charAt(0)) {
+						output.add("li $t0, '" + aux.charAt(i) + "'");
+						output.add("sb $t0, ($s0)");
+						output.add("addi $s0, $s0, 1");
 					}
 				}
-				
+
 				output.add("sb $zero, ($s0)");
-			
+
 			}
 
-		} else if (left.getType().equals("float")){
-			
+		} else if (left.getType().equals("float")) {
+
 			output.addAll(exp.toCode());
 			output.add("lw $t0, " + exp.getMemoryAddress() + "($gp)");
 			output.add("mtc1 $t0, $f0");
 			output.add("cvt.s.w $f2, $f0");
-			output.add("swc1 $f2, "+left.getMemoryAddress()+"($gp)");
-					
-		
-			
+			output.add("swc1 $f2, " + left.getMemoryAddress() + "($gp)");
+
 		}
-		
-		
+
 		return output;
 	}
-	
-	
 
 }

@@ -1,79 +1,16 @@
-main() {
-
-	String salida;
-	salida = "Pruebas de reales";
-	println(salida);
-	salida = "==================";
-	println(salida);
-	float a;
-	float b;
-	float c;
+main () {
 	
+/*Intentamos asignar una cadena
+de caracteres a un entero*/
+
+	String a;
+	int b;
+	int c;
 	
 	a = "Hola";
-	b = 5.25;
-	c = 0;
-	
-	salida = "Valores iniciales de las variables";
-	println(salida);
-	salida = "a = ";
-	print(salida);
-	println(a);
+		
+	//b = 32;
 
-	salida = "b = ";
-	print(salida);
-	println(b);
-
-	salida = "c = ";
-	print(salida);
-	println(c);
-	
-	
-	salida = "a + b = ";
-	c = a + b;
-	print(salida);
-	println(c);
-	
-	salida = "a - b = ";
-	c = a - b;
-	print(salida);
-	println(c);
-
-	salida = "a * b = ";
-	c = a * b;
-	print(salida);
-	println(c);
-
-	salida = "a / b = ";
-	c = a / b;
-	print(salida);
-	println(c);
-
-	a = 32;
-	salida = "Se asigna a A 32, su valor con la coercion es: ";
-	print(salida);
-	println(a);
-
-	
-	int d;
-
-	salida = "Prueba de varias operaciones anyadiendo numeros directamente";
-	println(salida);
-	salida = "Tambien se hace coercion de los enteros a float";
-	println(salida);
-
-	salida = "a*b-5/2.5+48/12*2+c = ";
-	d = a*b-10/2+48/12*2+c;
-
-	print(salida);
-	println(d);
-	
-	salida = "Fin de la prueba de reales y coercion de tipos";
-	println(salida);
-
-
-
+	//c = a/b;
 
 }
-
-
