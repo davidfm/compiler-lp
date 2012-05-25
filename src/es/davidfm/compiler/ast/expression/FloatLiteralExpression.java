@@ -73,7 +73,9 @@ public class FloatLiteralExpression extends Expression {
 		return ""+value;
 	}
 	
-
+	/**
+	 * Translates to ASM code
+	 */
 	public ArrayList<String> toCode(){
 		
 		ArrayList<String> output = new ArrayList<String>();

@@ -65,7 +65,9 @@ public String toString(){
 		return this.value;
 	}
 	
-
+	/**
+	 * Used by the translation to ASM, this method does not translate to ASM directly.
+	 */
 	public ArrayList<String> toCode(){
 		
 		ArrayList<String> output = new ArrayList<String>();

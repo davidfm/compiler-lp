@@ -81,15 +81,10 @@ public class IntegerLiteralExpression extends Expression {
 		
 	}
 	
+
 	/**
-	 * This is a tree leaf
+	 * Translates to ASM code
 	 */
-	public boolean isLeaf(){
-		
-		return true;
-	}
-	
-	
 	public ArrayList<String> toCode(){
 		
 		ArrayList<String> output = new ArrayList<String>();
@@ -102,7 +97,10 @@ public class IntegerLiteralExpression extends Expression {
 		
 	}
 	
-public int getMemoryAddress(){
+	/**
+	 * Returns the memory address where the value will be stored
+	 */
+	public int getMemoryAddress(){
 		
 		return this.memoryAddress;
 	}

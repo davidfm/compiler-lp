@@ -124,12 +124,17 @@ public class BinaryExpression extends Expression {
 	
 	
 
-	
+	/**
+	 * Returns the memory address where the result will be stored
+	 */
 	public int getMemoryAddress(){
 		
 		return this.memoryAddress;
 	}
 	
+	/**
+	 * Translates to ASM code
+	 */
 	public ArrayList<String> toCode(){
 		
 		ArrayList<String> output = new ArrayList<String>();

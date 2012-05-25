@@ -10,7 +10,7 @@ main() {
 	float c;
 	
 	
-	a = 12.75;
+	a = "Hola";
 	b = 5.25;
 	c = 0;
 	

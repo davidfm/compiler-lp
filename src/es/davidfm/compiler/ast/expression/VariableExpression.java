@@ -70,7 +70,7 @@ public class VariableExpression extends Expression {
 	
 
 	/**
-	 * Variable to code. In this case, an empty list is returned.
+	 * Variable to ASM code. In this case, an empty list is returned.
 	 */
 	public ArrayList<String> toCode(){
 		
@@ -80,6 +80,9 @@ public class VariableExpression extends Expression {
 		return output;
 	}
 	
+	/**
+	 * Returns the memory address where the value of the variable will be stored.
+	 */
 	public int getMemoryAddress(){
 		
 		return this.memoryAddress;

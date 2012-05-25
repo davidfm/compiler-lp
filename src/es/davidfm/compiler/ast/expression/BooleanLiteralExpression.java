@@ -74,7 +74,9 @@ public class BooleanLiteralExpression extends Expression {
 	}
 	
 
-	
+	/**
+	 * Translates to ASM code
+	 */
 	public ArrayList<String> toCode(){
 		
 		ArrayList<String> output = new ArrayList<String>();
@@ -85,14 +87,7 @@ public class BooleanLiteralExpression extends Expression {
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see es.davidfm.compiler.ast.expression.Expression#getType()
-	 */
-	@Override
-	public String getType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 
 	
 	

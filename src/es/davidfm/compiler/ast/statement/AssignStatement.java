@@ -94,12 +94,13 @@ public class AssignStatement extends Statement {
 		
 		if (!t1.equals(t2)) {
 			
-						
-			if (!t1.equals("float") && !t2.equals("int")) {
+		
+			if (t1.equals("int") && t2.equals("float") || t1.equals("int") && t2.equals("String")
+					|| t1.equals("float") && t2.equals("String")) {
 				
 				
 				System.out.println("ERROR: You cannot assign a(n) " + t2
-						+ " to a " + t1);
+						+ " to a(n) " + t1);
 				System.out.println("Analysis terminated");
 				System.exit(1);
 			} 
