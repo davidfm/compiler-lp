@@ -112,10 +112,18 @@ STRG="\"".+"\""
 <YYINITIAL> "String" {return token(sym.STRING);}
 <YYINITIAL> ";" {return token(sym.SEMI);}
 <YYINITIAL> "," {return token(sym.COMMA);}
+<YYINITIAL> "==" {return token(sym.EQUALS);}
+<YYINITIAL> "!=" {return token(sym.DIFFERENT);}
+<YYINITIAL> ">=" {return token(sym.GREATEREQUAL);}
+<YYINITIAL> "<=" {return token(sym.LESSEQUAL);}
+<YYINITIAL> ">" {return token(sym.GREATER);}
+<YYINITIAL> "<" {return token(sym.LESS);}
+
 <YYINITIAL> "=" {return token(sym.ASSIGN);}
 <YYINITIAL> "main" {return token(sym.MAIN);}
 <YYINITIAL> "print" {return token(sym.PRINT);}
 <YYINITIAL> "println" {return token(sym.PRINTLN);}
+<YYINITIAL> "while" {return token(sym.WHILE);}
 
 
 <YYINITIAL> {NUM_INTEGER} {return token(sym.NUM_INTEGER);}
