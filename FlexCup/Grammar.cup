@@ -83,13 +83,6 @@ action code {:
 	
 	}
 	
-
-
-
-
-
-
-
 :}
 
 
@@ -112,7 +105,7 @@ terminal String COMMA;
 terminal String ASSIGN;
 terminal String MAIN;
 terminal String PRINT;
-terminal String PRINTLINE;
+terminal String PRINTLN;
 terminal String NUM_INTEGER;
 terminal String NUM_FLOAT;
 terminal String BOOL;
@@ -129,6 +122,7 @@ non terminal AssignStatement Assign;
 non terminal String Type;
 non terminal Expression Expression;
 non terminal PrintStatement Print;
+non terminal PrintLineStatement Println;
 
 
 
@@ -148,22 +142,27 @@ precedence left LPAREN, RPAREN;
 
 start with Program;
 
-Program ::= {: System.out.println("Beginning of the program");
+Program ::= {: System.out.println("Beginning the analysis");
 			init();
 			 :}		
  			MAIN LPAREN RPAREN LBRACE Body RBRACE
-			{: end(); :};
+			{:
+				System.out.println("Analysis finished succesfully");
+				end();
+				System.out.println("Code generated succesfully");				
+  			:};
 
 		
 Body ::= Statement Body | Statement;
 			
 Statement ::= Declaration 
 			| Assign:a {: program.addToBody(a); :}
-			| Print:p {: program.addToBody(p); :};
+			| Print:p {: program.addToBody(p); :}
+			| Println:pl {:program.addToBody(pl); :};
 	
 Declaration ::= Type:t ID:id SEMI
 				{: if (program.containsVariable(id)){
-					System.out.println("error");
+					System.out.println("Variable " + id + " is already declared");
 					} else {
 
 						if (!t.equals("String")){
@@ -186,7 +185,7 @@ Assign ::= ID:id2 ASSIGN Expression:e SEMI
 				Variable v = program.getVariable(id2);
 				RESULT = new AssignStatement(v,e);
 			} else {
-				System.out.println("error");
+				System.out.println("Error. Variable not declared.");
 			}
 
 			:};
@@ -207,6 +206,25 @@ Expression ::= Expression:e1 PLUS Expression:e2 {: RESULT = new BinaryExpression
 			RESULT = new VariableExpression(v);
 		:}
 |LPAREN Expression:e RPAREN {: RESULT = e; :}  ;
-Print ::= PRINT LPAREN ID:id RPAREN SEMI {: RESULT = new PrintStatement(program.getVariable(id)); :};
+Print ::= PRINT LPAREN ID:id RPAREN SEMI {:
+	if (program.containsVariable(id)){
+ 		RESULT = new PrintStatement(program.getVariable(id));
+	} else {
+
+		System.out.println("Error. Variable not declared.");
+
+	 }
+:};
+
+Println ::= PRINTLN LPAREN ID:id RPAREN SEMI {:
+	if (program.containsVariable(id)){
+ 		RESULT = new PrintLineStatement(program.getVariable(id));
+	} else {
+
+		System.out.println("Error. Variable not declared.");
+
+	 }
+:};
+
 
  

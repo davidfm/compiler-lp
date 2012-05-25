@@ -3,14 +3,14 @@
 
 LICENSE:
 
-    This file is part of CalculatorCompiler.
+    This file is part of compiler-lp.
 
-    CalculatorCompiler is free software: you can redistribute it and/or modify
+    compiler-lp is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
-    CalculatorCompiler is distributed in the hope that it will be useful,
+    compiler-lp is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
     GNU General Public License for more details.
@@ -115,6 +115,7 @@ STRG="\"".+"\""
 <YYINITIAL> "=" {return token(sym.ASSIGN);}
 <YYINITIAL> "main" {return token(sym.MAIN);}
 <YYINITIAL> "print" {return token(sym.PRINT);}
+<YYINITIAL> "println" {return token(sym.PRINTLN);}
 
 
 <YYINITIAL> {NUM_INTEGER} {return token(sym.NUM_INTEGER);}
@@ -123,6 +124,6 @@ STRG="\"".+"\""
 <YYINITIAL> {ID} {return token(sym.ID);}
 <YYINITIAL> {STRG} {return token(sym.STRG);}
  
-<YYINITIAL> [^] {System.out.println("Error en linea: " + yyline + " columna: " + yycolumn + " ----> " + yytext());}
+<YYINITIAL> [^] {System.out.println("Error in line: " + yyline + " column: " + yycolumn + " ----> " + yytext()); System.exit(1);}
 
 

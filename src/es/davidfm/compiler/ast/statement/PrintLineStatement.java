@@ -26,61 +26,37 @@
 
 
 
-package es.davidfm.compiler.ast.expression;
+package es.davidfm.compiler.ast.statement;
 
 import java.util.ArrayList;
 
-
+import es.davidfm.compiler.ast.structure.Variable;
 
 /**
- * This class represents a String literal expression
+ * 
  */
-public class StringLiteralExpression extends Expression {
-	
-	private String value;
-	
+public class PrintLineStatement extends PrintStatement {
+
 	/**
-	 * Constructor
-	 * @param lexeme
+	 * @param v
 	 */
-	public StringLiteralExpression(String lexeme){
+	public PrintLineStatement(Variable v) {
+		super(v);
 		
-		super("String");
-		this.value = lexeme;
-		
-		
-	}
-	
-	/**
-	 * Returns the value of the expression
-	 * @return value
-	 */
-	public String getValue(){
-		
-		return this.value;
-	}
-	
-public String toString(){
-		
-		return this.value;
-	}
-	
-	/**
-	 * This is a tree leaf
-	 */
-	public boolean isLeaf(){
-		
-		return true;
 	}
 	
 	public ArrayList<String> toCode(){
 		
 		ArrayList<String> output = new ArrayList<String>();
-		
-		output.add(""+value);
-		
+		output.addAll(super.toCode());
+		output.add("li $v0, 4");
+		output.add("la $a0, rivinvaihto");
+		output.add("syscall");
+				
 		return output;
 		
 	}
 
+	
+	
 }

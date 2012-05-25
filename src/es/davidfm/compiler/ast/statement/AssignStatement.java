@@ -36,7 +36,7 @@ import es.davidfm.compiler.ast.structure.Variable;
  */
 public class AssignStatement extends Statement {
 
-	private Variable left; // Variable to wich an expression is assigned
+	private Variable left; // Variable to which an expression is assigned
 	private Expression exp; // Expression assigned to the variable
 
 	/**
@@ -46,7 +46,9 @@ public class AssignStatement extends Statement {
 	 * @param exp
 	 */
 	public AssignStatement(Variable left, Expression exp) {
-
+		
+	
+		
 		this.sameType(left, exp);
 		this.left = left;
 		this.exp = exp;
@@ -84,18 +86,28 @@ public class AssignStatement extends Statement {
 	 * @param e
 	 */
 	private void sameType(Variable l, Expression e) {
+		
+	if (l.getName().equals("d")){
+			
+			System.out.println(l.getType());
+			System.out.println(e.getType());
+		}
+		
 		String t1 = l.getType();
 		String t2 = e.getType();
-
+		
+		
 		if (!t1.equals(t2)) {
-
-			if (!t1.equals("float") && t2.equals("int")) {
-
+			
+						
+			if (!t1.equals("float") && !t2.equals("int")) {
+				
+				
 				System.out.println("ERROR: You cannot assign a(n) " + t2
 						+ " to a " + t1);
 				System.out.println("Analysis terminated");
 				System.exit(1);
-			}
+			} 
 		}
 	}
 
@@ -104,6 +116,7 @@ public class AssignStatement extends Statement {
 
 		ArrayList<String> output = new ArrayList<String>();
 
+		
 		if (left.getType().equals(exp.getType())) {
 
 			if (exp.getType().equals("int")) {
@@ -119,6 +132,25 @@ public class AssignStatement extends Statement {
 				output.add("lwc1 $f0, " + exp.getMemoryAddress()+"($gp)");
 				output.add("swc1 $f0, " + left.getMemoryAddress() + "($gp)");
 
+			} else if (exp.getType().equals("String")){
+				
+				String aux = exp.toCode().get(0);
+				output.add("la $s0, "+left.getName());
+				
+							
+				for (int i=0; i<aux.length(); i++){
+					
+					String notThis = "\"";
+					
+					if (aux.charAt(i)!=notThis.charAt(0)){
+					output.add("li $t0, '"+aux.charAt(i)+"'");
+					output.add("sb $t0, ($s0)");
+					output.add("addi $s0, $s0, 1");
+					}
+				}
+				
+				output.add("sb $zero, ($s0)");
+			
 			}
 
 		} else if (left.getType().equals("float")){
@@ -129,15 +161,14 @@ public class AssignStatement extends Statement {
 			output.add("cvt.s.w $f2, $f0");
 			output.add("swc1 $f2, "+left.getMemoryAddress()+"($gp)");
 					
+		
+			
 		}
-
+		
+		
 		return output;
 	}
 	
-	public String stringToCode(){
-		
-			
-		return left.getName() + ":\t.asciiz " + exp.toCode().get(0);
-	}
+	
 
 }

@@ -29,7 +29,8 @@
 package es.davidfm.compiler.ast.structure;
 
 /**
- * 
+ * This class contains the information related to a variable.
+ * Name, type and memory address where it will be stored.
  */
 public class Variable {
 	

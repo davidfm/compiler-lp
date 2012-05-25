@@ -34,7 +34,7 @@ import java.util.ArrayList;
  * This class represents a group of statements.
  * It is used as the body of the program, body of a loop, etc.
  */
-public class BlockStatement {
+public class BlockStatement extends Statement {
 	
 	private ArrayList<Statement> list; //List of statements
 	
@@ -68,5 +68,13 @@ public class BlockStatement {
 	public String toString(){
 		
 		return list.toString();
+	}
+	
+	/**
+	 * Not yet implemented because it is not used
+	 */
+	public ArrayList<String> toCode(){
+		
+		return null;
 	}
 }

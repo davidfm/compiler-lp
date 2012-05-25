@@ -35,7 +35,7 @@ import es.davidfm.compiler.ast.statement.BlockStatement;
 import es.davidfm.compiler.ast.statement.Statement;
 
 /**
- * 
+ * This class is the root of the AST.
  */
 public class Program {
 
@@ -43,6 +43,9 @@ public class Program {
 	private BlockStatement body;
 	private TSymbols tos;
 
+	/**
+	 * Constructor
+	 */
 	public Program() {
 
 		this.variables = new ArrayList<Variable>();
@@ -50,49 +53,85 @@ public class Program {
 		this.tos = new TSymbols();
 		this.tos.addScope();
 	}
-
+	
+	/**
+	 * Add new variable
+	 * @param var
+	 */
 	public void addVariable(Variable var) {
 
 		this.variables.add(var);
 		tos.addVariable(var);
 
 	}
-
+	
+	/**
+	 * Get the variables that have been declared.
+	 * @return variables
+	 */
 	public ArrayList<Variable> getVariables() {
 
 		return this.variables;
 	}
-
+	
+	/**
+	 * Adds a new scope to the Table of Symbols
+	 */
 	public void newScope() {
 
 		this.tos.addScope();
 	}
 
+	/**
+	 * Deletes scope from the Table of Symbols
+	 */
 	public void deleteScope() {
 
 		this.tos.deleteScope();
 	}
-
+	
+	/**
+	 * Sets the body of the program
+	 * @param body
+	 */
 	public void setBody(BlockStatement body) {
 
 		this.body = body;
 	}
-
+	
+	/**
+	 * Returns the body of the program
+	 * @return body
+	 */
 	public BlockStatement getBody() {
 
 		return this.body;
 	}
-
+	
+	/**
+	 * 
+	 * @param id
+	 * @return true if variable exists
+	 */
 	public boolean containsVariable(String id) {
 
 		return tos.exists(id);
 	}
-
+	
+	/**
+	 * Returns the variable matching a given id
+	 * @param id
+	 * @return a variable
+	 */
 	public Variable getVariable(String id) {
 
 		return tos.getVariable(id);
 	}
-
+	
+	/**
+	 * Adds a new statment to the body
+	 * @param s
+	 */
 	public void addToBody(Statement s) {
 
 		body.add(s);
@@ -108,7 +147,11 @@ public class Program {
 
 		return output;
 	}
-
+	
+	/**
+	 * Translation to ASM
+	 * @return 
+	 */
 	public ArrayList<String> toCode() {
 
 		ArrayList<String> output = new ArrayList<String>();
@@ -123,36 +166,30 @@ public class Program {
 
 		return output;
 	}
-
+	
+	/**
+	 * Translates only the declarations of- Strings to ASM
+	 * Necessary due to MIPS characteristics when working with Strings.
+	 * @return
+	 */
 	public ArrayList<String> stringToCode() {
 
 		ArrayList<String> output = new ArrayList<String>();
 
-		Iterator it = body.getList().iterator();
-
-		while (it.hasNext()) {
-
-			Object o = it.next();
-			
-			
-			boolean equals = o.getClass().toString().equals("class es.davidfm.compiler.ast.statement.AssignStatement");
-			
 		
-					
-			if (equals) {
-
-				AssignStatement aux = (AssignStatement) o;
+		Iterator<Variable> it = variables.iterator();
+		
+		while (it.hasNext()){
+			
+			Variable aux = it.next();
+			
+			if (aux.getType().equals("String")){
 				
-				
-				
-				if (aux.getLeft().getType().equals("String")) {
-					output.add(aux.stringToCode());
-
-				}
-
+				output.add(aux.getName()+": .space 32");
 			}
 		}
 		
+				
 		return output;
 
 	}
