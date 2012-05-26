@@ -99,7 +99,7 @@ public class CodeGenerator {
 	
 	public void generateAsm() throws IOException{
 		
-					
+							
 		openFile();
 		writeLine(".data");
 		writeLine("rivinvaihto: .asciiz \"\\n\"");

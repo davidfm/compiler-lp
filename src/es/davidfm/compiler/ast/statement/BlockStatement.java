@@ -30,11 +30,15 @@ package es.davidfm.compiler.ast.statement;
 
 import java.util.ArrayList;
 
+import es.davidfm.compiler.ast.structure.Variable;
+
 /**
  * This class represents a group of statements.
  * It is used as the body of the program, body of a loop, etc.
  */
 public class BlockStatement extends Statement {
+	
+	private ArrayList<Variable> variables;
 	
 	private ArrayList<Statement> list; //List of statements
 	
@@ -44,8 +48,16 @@ public class BlockStatement extends Statement {
 	 * A new list of statements is instantiated
 	 */
 	public BlockStatement(){
-		
+		this.variables = new ArrayList<Variable>();
 		this.list = new ArrayList<Statement>();
+	}
+	
+	
+	public BlockStatement(ArrayList<Variable> variables, ArrayList<Statement> list){
+		this.variables = variables;
+		this.list = list;
+		
+		
 	}
 
 	/**
@@ -67,7 +79,7 @@ public class BlockStatement extends Statement {
 	
 	public String toString(){
 		
-		return list.toString();
+		return "Variables("+variables.toString()+") Body("+list.toString()+")";
 	}
 	
 	/**

@@ -28,8 +28,12 @@
 
 package es.davidfm.compiler.ast.structure;
 
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.Stack;
+
+
 
 
 
@@ -94,14 +98,36 @@ public class TSymbols {
 	}
 	
 	
+//	/**
+//	 * Checks if the variable exists in the current scope
+//	 * @param name
+//	 * @return true if the variable exists
+//	 */
+//	public boolean exists(String name){
+//		
+//		return this.stack.peek().containsKey(name);
+//	}
+	
 	/**
-	 * Checks if the variable exists in the current scope
-	 * @param name
+	 * Checks if the variable exists in any of the scopes
+	 * @param name 
 	 * @return true if the variable exists
 	 */
 	public boolean exists(String name){
+				
+		boolean found = false;
 		
-		return this.stack.peek().containsKey(name);
+		Iterator<Hashtable<String,Variable>> it = stack.iterator();
+		
+		while (it.hasNext() && found == false){
+			
+			if (it.next().containsKey(name)){
+				
+				found = true;
+			}
+		}
+		
+		return found;
 	}
 	
 

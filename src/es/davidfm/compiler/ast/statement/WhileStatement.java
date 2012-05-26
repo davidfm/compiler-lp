@@ -29,6 +29,8 @@
 package es.davidfm.compiler.ast.statement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import es.davidfm.compiler.ast.expression.Expression;
 
@@ -42,16 +44,29 @@ public class WhileStatement extends Statement {
 	
 	private Statement instruction;
 	
+	private final List<String> validOps = Arrays.asList(">","<","==","!=","<=", ">=");
+	
 	
 	/**
 	 * Constructor
+	 * The constructor checks if the expression is valid as a condition
 	 * @param condition
 	 * @param instruction
 	 */
 	public WhileStatement(Expression condition, Statement instruction){
 		
+		
+		if (!validOps.contains(condition.getOp())){
+			
+			System.out.println("Error. This type of expression cannot be a condition");
+			System.out.println("Analysis terminated");
+			System.exit(1);
+			
+		} 
+		
 		this.condition = condition;
 		this.instruction = instruction;
+		
 	}
 
 	/* (non-Javadoc)
@@ -77,6 +92,11 @@ public class WhileStatement extends Statement {
 	 */
 	public Statement getInstruction() {
 		return instruction;
+	}
+	
+	public String toString(){
+		
+		return "WHILE(CONDITION("+condition+")DO("+instruction+")";
 	}
 
 }

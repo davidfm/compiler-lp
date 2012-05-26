@@ -1,16 +1,22 @@
 main () {
 	
-/*Intentamos asignar una cadena
-de caracteres a un entero*/
 
-	String a;
-	int b;
-	int c;
+
+	int a;
+	a = 5;
 	
-	a = "Hola";
+	while(a<30){
 		
-	//b = 32;
-
-	//c = a/b;
+		int b;
+		
+		b = a+1;
+		println(b);
+	
+	
+	}
+	
+	int b;
+	b = 5;
+	print(a);
 
 }

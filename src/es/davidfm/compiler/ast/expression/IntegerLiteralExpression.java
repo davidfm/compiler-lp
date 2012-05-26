@@ -53,6 +53,7 @@ public class IntegerLiteralExpression extends Expression {
 		super("int");
 		this.value = Integer.parseInt(lexeme);
 		this.memoryAddress = memoryAddress;
+		System.out.println("Valor: " + value + ", Memoria: " + memoryAddress);
 	}
 	
 	

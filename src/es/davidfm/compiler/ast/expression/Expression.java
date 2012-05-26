@@ -64,6 +64,11 @@ public abstract class Expression {
 		return this.memoryAddress;
 	}
 	
+	public String getOp(){
+		
+		return "";
+	}
+	
 	
 	public abstract ArrayList<String> toCode();
 }

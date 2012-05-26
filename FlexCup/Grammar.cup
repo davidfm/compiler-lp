@@ -28,6 +28,10 @@ package es.davidfm.compiler.analysis;
 
 import java_cup.runtime.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Stack;
+import java.util.Iterator;
+
 import es.davidfm.compiler.ast.structure.*;
 import es.davidfm.compiler.ast.expression.*;
 import es.davidfm.compiler.ast.statement.*;
@@ -51,6 +55,7 @@ parser code{:
 				
 				System.out.println("Error");
 
+
 			}			
 	
 	}
@@ -67,21 +72,86 @@ action code {:
 
 	Program program;
 	int memory = 0;
+
+	ArrayList<Statement> auxBody = new ArrayList<Statement>();
+	ArrayList<Variable> auxVariables = new ArrayList<Variable>();
+
+	Stack<ArrayList<Statement>> auxStack = new Stack<ArrayList<Statement>>();
+	Stack<Integer> auxMemoryStack = new Stack<Integer>();
+	Stack<ArrayList<Variable>> auxVariablesStack = new Stack<ArrayList<Variable>>();
 	
-	void init(){
+	private void init(){
 	
 		program = new Program();
 	
 	}
 	
 	
-	void end() throws IOException{
-	
-		CodeGenerator cg = new CodeGenerator(program);
-		cg.generateAsm();
+	private void end() throws IOException{
+		
+		System.out.println(program);
+		
+		//CodeGenerator cg = new CodeGenerator(program);
+		//cg.generateAsm();
 		
 	
 	}
+
+
+
+	private Variable getVariable(String id){
+		
+		boolean found = false;
+		Variable v = null;		
+	
+		Iterator it = auxVariables.iterator();
+		
+		while (it.hasNext() && !found){
+
+			Variable aux = (Variable) it.next();
+			
+			if (aux.equals(id)){
+
+				found = true;
+				v = aux;
+			}
+		}
+
+		if (found){
+			return v;
+
+		} else {
+
+		it = auxVariablesStack.iterator();
+
+		while (it.hasNext() && !found){
+
+			ArrayList<Variable> aux = (ArrayList<Variable>) it.next();
+			
+			Iterator<Variable> it2 = aux.iterator();
+
+			while (it2.hasNext() && !found){
+
+				Variable vaux = it2.next();
+
+				if (vaux.equals(id)){
+
+					found = true;
+					v = vaux;
+				}
+			
+
+			
+	}
+		
+
+	}
+
+	return v;
+
+}
+
+}
 	
 :}
 
@@ -112,11 +182,17 @@ terminal String BOOL;
 terminal String ID;
 terminal String STRG;
 terminal String WHILE;
+terminal String EQUALS;
+terminal String DIFFERENT;
+terminal String GREATER;
+terminal String LESS;
+terminal String LESSEQUAL;
+terminal String GREATEREQUAL;
 
 
 
 non terminal Program Program;
-non terminal Body;
+non terminal BlockStatement Body;
 non terminal Statement Statement;
 non terminal Declaration;
 non terminal AssignStatement Assign;
@@ -125,15 +201,18 @@ non terminal Expression Expression;
 non terminal PrintStatement Print;
 non terminal PrintLineStatement Println;
 non terminal WhileStatement While;
+non terminal ArrayList<Statement> Statements;
 
 
 
-
+precedence left BOOL;
 precedence left STRG;
 precedence left NUM_INTEGER;
 precedence left NUM_FLOAT;
 precedence right ID;
 
+
+precedence left LESS, GREATER, DIFFERENT, EQUALS;
 
 precedence left ASSIGN;
 precedence left PLUS;
@@ -147,21 +226,24 @@ start with Program;
 Program ::= {: System.out.println("Beginning the analysis");
 			init();
 			 :}		
- 			MAIN LPAREN RPAREN LBRACE Body RBRACE
-			{:
+ 			MAIN LPAREN RPAREN LBRACE Body:b RBRACE
+			{:	
+				program.setBody(b);
 				System.out.println("Analysis finished succesfully");
 				end();
 				System.out.println("Code generated succesfully");				
   			:};
 
+
+Body ::= Statements {: RESULT = new BlockStatement(auxVariables, auxBody); :};
 		
-Body ::= Statement Body | Statement;
+Statements ::= Statement Statements  | Statement {: RESULT = auxBody; :};
 			
 Statement ::= Declaration 
-			| Assign:a {: program.addToBody(a); :}
-			| Print:p {: program.addToBody(p); :}
-			| Println:pl {:program.addToBody(pl); :}
-			| While:w {program.addToBody(w); :};
+			| Assign:a {: auxBody.add(a); :}
+			| Print:p {: auxBody.add(p); :}
+			| Println:pl {: auxBody.add(pl); :}
+			| While:w {: auxBody.add(w); :};
 	
 Declaration ::= Type:t ID:id SEMI
 				{: if (program.containsVariable(id)){
@@ -172,10 +254,12 @@ Declaration ::= Type:t ID:id SEMI
 						Variable v = new Variable(t,id, memory);
 						memory+=4;
 						program.addVariable(v);
+						auxVariables.add(v);
 
 						} else {
 							Variable v = new Variable(t,id, -1);
 							program.addVariable(v);
+							auxVariables.add(v);
 						}
 							
 					}
@@ -185,7 +269,7 @@ Declaration ::= Type:t ID:id SEMI
 				
 Assign ::= ID:id2 ASSIGN Expression:e SEMI
 			{: if (program.containsVariable(id2)){
-				Variable v = program.getVariable(id2);
+				Variable v = getVariable(id2);
 				RESULT = new AssignStatement(v,e);
 			} else {
 				System.out.println("Error. Variable not declared.");
@@ -201,17 +285,21 @@ Type ::= INTEGER {: RESULT = new String("int"); :}
 Expression ::= Expression:e1 PLUS Expression:e2 {: RESULT = new BinaryExpression("+",e1,e2,memory); memory+=4; :}
 |Expression:e1 MINUS Expression:e2 {: RESULT = new BinaryExpression("-",e1,e2,memory); memory+=4; :}
 |Expression:e1 TIMES Expression:e2 {: RESULT = new BinaryExpression("*",e1,e2,memory); memory+=4; :}
-|Expression:e1 DIV Expression:e2 {: RESULT = new BinaryExpression("/",e1,e2,memory); memory+=4; :}	
+|Expression:e1 DIV Expression:e2 {: RESULT = new BinaryExpression("/",e1,e2,memory); memory+=4; :}
+|Expression:e1 EQUALS Expression:e2 {: RESULT = new BinaryExpression("==",e1,e2,memory); memory+=4; :}
+|Expression:e1 DIFFERENT Expression:e2 {: RESULT = new BinaryExpression("!=",e1,e2,memory); memory+=4; :}
+|Expression:e1 GREATER Expression:e2 {: RESULT = new BinaryExpression(">",e1,e2,memory); memory+=4; :}
+|Expression:e1 LESS Expression:e2 {: RESULT = new BinaryExpression("<",e1,e2,memory); memory+=4; :}
 |NUM_INTEGER:i {: RESULT = new IntegerLiteralExpression(i, memory); memory+=4; :}
 |NUM_FLOAT:f {: RESULT = new FloatLiteralExpression(f, memory); memory+=4; :}
 |STRG:s {: RESULT = new StringLiteralExpression(s); :}
-|ID:id {: 	Variable v = program.getVariable(id);
+|ID:id {: 	Variable v = getVariable(id);
 			RESULT = new VariableExpression(v);
 		:}
 |LPAREN Expression:e RPAREN {: RESULT = e; :}  ;
 Print ::= PRINT LPAREN ID:id RPAREN SEMI {:
 	if (program.containsVariable(id)){
- 		RESULT = new PrintStatement(program.getVariable(id));
+ 		RESULT = new PrintStatement(getVariable(id));
 	} else {
 
 		System.out.println("Error. Variable not declared.");
@@ -221,7 +309,7 @@ Print ::= PRINT LPAREN ID:id RPAREN SEMI {:
 
 Println ::= PRINTLN LPAREN ID:id RPAREN SEMI {:
 	if (program.containsVariable(id)){
- 		RESULT = new PrintLineStatement(program.getVariable(id));
+ 		RESULT = new PrintLineStatement(getVariable(id));
 	} else {
 
 		System.out.println("Error. Variable not declared.");
@@ -229,7 +317,24 @@ Println ::= PRINTLN LPAREN ID:id RPAREN SEMI {:
 	 }
 :};
 
-While ::= WHILE LPAREN Expression RPAREN LBRACE Body RBRACE;
+While ::={: 	auxStack.push(auxBody);
+		auxMemoryStack.push(memory);
+		auxBody = new ArrayList<Statement>();
+		program.newScope();
+		auxVariablesStack.push(auxVariables);
+		auxVariables = new ArrayList<Variable>();
+	:}
+WHILE LPAREN Expression:e RPAREN LBRACE Body:b RBRACE
+
+{:	RESULT = new WhileStatement(e,b);
+	program.deleteScope();
+	auxBody = auxStack.pop();
+	memory = auxMemoryStack.pop();
+	auxVariables = auxVariablesStack.pop();	
+:};
+
+
+
 
 
  

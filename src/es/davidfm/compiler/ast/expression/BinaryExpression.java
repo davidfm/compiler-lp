@@ -62,6 +62,7 @@ public class BinaryExpression extends Expression {
 		this.left = left;
 		this.right = right;
 		this.memoryAddress = memoryAddress;
+		System.out.println(this.memoryAddress);
 		
 		if (left.getType().equals(right.getType())){
 			

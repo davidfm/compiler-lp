@@ -142,7 +142,7 @@ public class Program {
 	public String toString() {
 		String output = "";
 
-		output = "(Program\n\t(VariablesList(" + this.variables + "\n\t(Body("
+		output = "(Program\n\t"
 				+ body + ")\n)";
 
 		return output;
