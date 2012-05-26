@@ -154,17 +154,8 @@ public class Program {
 	 */
 	public ArrayList<String> toCode() {
 
-		ArrayList<String> output = new ArrayList<String>();
-
-		Iterator it = body.getList().iterator();
-
-		while (it.hasNext()) {
-
-			Statement s = (Statement) it.next();
-			output.addAll(s.toCode());
-		}
-
-		return output;
+	
+		return body.toCode();
 	}
 	
 	/**

@@ -49,7 +49,6 @@ public class VariableExpression extends Expression {
 	public VariableExpression(Variable var){
 		
 		super(var.getType());
-		//System.out.println(var);
 		this.variable = var;
 		this.memoryAddress = variable.getMemoryAddress();
 	}

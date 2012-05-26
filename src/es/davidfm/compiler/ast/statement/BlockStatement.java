@@ -29,6 +29,7 @@
 package es.davidfm.compiler.ast.statement;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import es.davidfm.compiler.ast.structure.Variable;
 
@@ -83,10 +84,20 @@ public class BlockStatement extends Statement {
 	}
 	
 	/**
-	 * Not yet implemented because it is not used
+	 * BlockStatement to ASM
 	 */
 	public ArrayList<String> toCode(){
 		
-		return null;
+		ArrayList<String> output = new ArrayList<String>();
+
+		Iterator it = this.getList().iterator();
+
+		while (it.hasNext()) {
+
+			Statement s = (Statement) it.next();
+			output.addAll(s.toCode());
+		}
+
+		return output;
 	}
 }

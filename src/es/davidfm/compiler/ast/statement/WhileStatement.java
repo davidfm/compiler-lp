@@ -22,9 +22,7 @@
 	@license http://www.gnu.org/licenses
 	@copyright 2012 David Fernández
 	
-*/
-
-
+ */
 
 package es.davidfm.compiler.ast.statement;
 
@@ -32,71 +30,127 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import es.davidfm.compiler.ast.expression.BinaryExpression;
 import es.davidfm.compiler.ast.expression.Expression;
 
 /**
  * This class represents a while loop
  */
 public class WhileStatement extends Statement {
-	
-	
+
+	private int counter;
+
 	private Expression condition;
-	
+
 	private Statement instruction;
-	
-	private final List<String> validOps = Arrays.asList(">","<","==","!=","<=", ">=");
-	
-	
+
+	private final List<String> validOps = Arrays.asList(">", "<", "==", "!=",
+			"<=", ">=");
+
 	/**
-	 * Constructor
-	 * The constructor checks if the expression is valid as a condition
+	 * Constructor The constructor checks if the expression is valid as a
+	 * condition
+	 * 
 	 * @param condition
 	 * @param instruction
 	 */
-	public WhileStatement(Expression condition, Statement instruction){
-		
-		
-		if (!validOps.contains(condition.getOp())){
-			
-			System.out.println("Error. This type of expression cannot be a condition");
+	public WhileStatement(int counter, Expression condition,
+			Statement instruction) {
+
+		if (!validOps.contains(condition.getOp())
+				&& !condition.getType().equals("int")) {
+
+			System.out
+					.println("Error. This type of expression cannot be a condition");
 			System.out.println("Analysis terminated");
 			System.exit(1);
-			
-		} 
-		
+
+		}
+
 		this.condition = condition;
 		this.instruction = instruction;
-		
-	}
 
-	/* (non-Javadoc)
-	 * @see es.davidfm.compiler.ast.statement.Statement#toCode()
-	 */
-	@Override
-	public ArrayList<String> toCode() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	/**
-	 * Returns the condition 
+	 * Returns the condition
+	 * 
 	 * @return condition
 	 */
 	public Expression getCondition() {
 		return condition;
 	}
-	
+
 	/**
 	 * Returns the instruction that will be done as long as the condition is met
+	 * 
 	 * @return instruction
 	 */
 	public Statement getInstruction() {
 		return instruction;
 	}
-	
-	public String toString(){
+
+	public String toString() {
+
+		return "WHILE(CONDITION(" + condition + ")DO(" + instruction + ")";
+	}
+
+	public ArrayList<String> toCode() {
+
+		ArrayList<String> output = new ArrayList<String>();
+		int auxAddress = 0;
 		
-		return "WHILE(CONDITION("+condition+")DO("+instruction+")";
+		if (condition.getClass().equals(BinaryExpression.class)){
+			
+			BinaryExpression aux = (BinaryExpression) condition;
+			
+			int left = aux.getLeft().getMemoryAddress();
+			int right = aux.getRight().getMemoryAddress(); 
+			
+			output.add("");
+			output.addAll(aux.getLeft().toCode());
+			output.addAll(aux.getRight().toCode());
+			output.add("#left");
+			output.add("lw $s0, "+left+"($gp)");
+			output.add("#right");
+			output.add("lw $s1, "+right+"($gp)");
+			
+			auxAddress = left;
+		}
+		
+		
+		
+		output.add("");	
+		output.add("LOOP"+this.counter+":");
+		
+		if (this.condition.getOp().equals(">") || this.condition.getOp().equals("<") || this.condition.getOp().equals("!=")  ){
+			
+			output.add("beq $s0, $s1, ENDLOOP"+counter);
+			
+		} else if(this.condition.getOp().equals("<=")) {
+			
+			output.add("bgq $s0, $s1, ENDLOOP"+counter);
+			
+		} else if (this.condition.getOp().equals(">=")){
+			
+			output.add("bit $s0, $s1, ENDLOOP"+counter);
+			
+		} else{
+			
+			output.add("bne $s0, $s1, ENDLOOP"+counter);
+			
+		}
+			
+		
+		output.addAll(this.getInstruction().toCode());
+		output.add("lw $s0, "+auxAddress+"($gp)");
+		output.add("");
+		output.add("j LOOP"+counter);
+		output.add("");
+		output.add("ENDLOOP"+counter+":");
+		output.add("");
+		
+		return output;
 	}
 
 }

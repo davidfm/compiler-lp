@@ -72,6 +72,7 @@ action code {:
 
 	Program program;
 	int memory = 0;
+	int whileCounter = 0;
 
 	ArrayList<Statement> auxBody = new ArrayList<Statement>();
 	ArrayList<Variable> auxVariables = new ArrayList<Variable>();
@@ -89,10 +90,9 @@ action code {:
 	
 	private void end() throws IOException{
 		
-		System.out.println(program);
 		
-		//CodeGenerator cg = new CodeGenerator(program);
-		//cg.generateAsm();
+		CodeGenerator cg = new CodeGenerator(program);
+		cg.generateAsm();
 		
 	
 	}
@@ -212,7 +212,7 @@ precedence left NUM_FLOAT;
 precedence right ID;
 
 
-precedence left LESS, GREATER, DIFFERENT, EQUALS;
+precedence left LESS, GREATER, DIFFERENT, EQUALS, GREATEREQUAL, LESSEQUAL;
 
 precedence left ASSIGN;
 precedence left PLUS;
@@ -288,8 +288,10 @@ Expression ::= Expression:e1 PLUS Expression:e2 {: RESULT = new BinaryExpression
 |Expression:e1 DIV Expression:e2 {: RESULT = new BinaryExpression("/",e1,e2,memory); memory+=4; :}
 |Expression:e1 EQUALS Expression:e2 {: RESULT = new BinaryExpression("==",e1,e2,memory); memory+=4; :}
 |Expression:e1 DIFFERENT Expression:e2 {: RESULT = new BinaryExpression("!=",e1,e2,memory); memory+=4; :}
-|Expression:e1 GREATER Expression:e2 {: RESULT = new BinaryExpression(">",e1,e2,memory); memory+=4; :}
-|Expression:e1 LESS Expression:e2 {: RESULT = new BinaryExpression("<",e1,e2,memory); memory+=4; :}
+|Expression:e1 GREATER Expression:e2 {: RESULT = new BinaryExpression(">",e1,e2,memory); memory+=4;  :}
+|Expression:e1 LESS Expression:e2 {: RESULT = new BinaryExpression("<",e1,e2,memory); memory+=4;:}
+|Expression:e1 LESSEQUAL Expression:e2 {: RESULT = new BinaryExpression("<",e1,e2,memory); memory+=4; :}
+|Expression:e1 GREATEREQUAL Expression:e2 {: RESULT = new BinaryExpression("<",e1,e2,memory); memory+=4; :}
 |NUM_INTEGER:i {: RESULT = new IntegerLiteralExpression(i, memory); memory+=4; :}
 |NUM_FLOAT:f {: RESULT = new FloatLiteralExpression(f, memory); memory+=4; :}
 |STRG:s {: RESULT = new StringLiteralExpression(s); :}
@@ -326,7 +328,8 @@ While ::={: 	auxStack.push(auxBody);
 	:}
 WHILE LPAREN Expression:e RPAREN LBRACE Body:b RBRACE
 
-{:	RESULT = new WhileStatement(e,b);
+{:	RESULT = new WhileStatement(whileCounter,e,b);
+	whileCounter++;
 	program.deleteScope();
 	auxBody = auxStack.pop();
 	memory = auxMemoryStack.pop();
