@@ -124,6 +124,8 @@ STRG="\"".+"\""
 <YYINITIAL> "print" {return token(sym.PRINT);}
 <YYINITIAL> "println" {return token(sym.PRINTLN);}
 <YYINITIAL> "while" {return token(sym.WHILE);}
+<YYINITIAL> "if" {return token(sym.IF);}
+<YYINITIAL> "else" {return token(sym.ELSE);}
 
 
 <YYINITIAL> {NUM_INTEGER} {return token(sym.NUM_INTEGER);}

@@ -125,7 +125,7 @@ public class Program {
 	 */
 	public Variable getVariable(String id) {
 
-		return tos.getVariable(id);
+		return tos.getVariableAll(id);
 	}
 	
 	/**
@@ -166,6 +166,7 @@ public class Program {
 	public ArrayList<String> stringToCode() {
 
 		ArrayList<String> output = new ArrayList<String>();
+		ArrayList<String> translated = new ArrayList<String>();
 
 		
 		Iterator<Variable> it = variables.iterator();
@@ -174,9 +175,10 @@ public class Program {
 			
 			Variable aux = it.next();
 			
-			if (aux.getType().equals("String")){
+			if (aux.getType().equals("String") && !translated.contains(aux.getName()) ){
 				
 				output.add(aux.getName()+": .space 32");
+				translated.add(aux.getName());
 			}
 		}
 		

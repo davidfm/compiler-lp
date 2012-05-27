@@ -1,23 +1,13 @@
-main () {
-	
+main(){
 
+int a;
+a = 0;
 
-	int a;
-	a = 5;
+	while (a <= 10){
 	
-	while(a<30){
-		
-		int b;
-		
-		b = a+1;
-		a = a+1;
-		println(b);
-	
+	println(a);
+	a = a+1;
 	
 	}
-	
-	int b;
-	b = 5;
-	print(a);
 
 }

@@ -37,6 +37,7 @@ public class Variable {
 	private String type;
 	private String name;
 	private int memoryAddress;
+	public static boolean translated = false;
 	
 	
 	public Variable(String type, String name, int memoryAddress){
@@ -116,6 +117,7 @@ public class Variable {
 	
 	
 
+	
 	
 	
 	

@@ -27,6 +27,8 @@
 package es.davidfm.compiler.ast.statement;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import es.davidfm.compiler.ast.expression.BinaryExpression;
 import es.davidfm.compiler.ast.expression.Expression;
@@ -40,9 +42,21 @@ public class IfStatement extends Statement {
 	private Expression condition;
 	private Statement thenInstructions;
 	private Statement elseInstructions;
+	private final List<String> validOps = Arrays.asList(">", "<", "==", "!=",
+			"<=", ">=");
 
 	public IfStatement(int counter, Expression condition,
 			Statement thenInstructions, Statement elseInstructions) {
+		
+		if (!validOps.contains(condition.getOp())
+				&& !condition.getType().equals("int")) {
+
+			System.out
+					.println("Error. This type of expression cannot be a condition");
+			System.out.println("Analysis terminated");
+			System.exit(1);
+
+		}
 		
 		this.counter = counter;
 		this.condition = condition;
@@ -101,11 +115,11 @@ public class IfStatement extends Statement {
 			
 			output.add("");
 			output.addAll(aux.getLeft().toCode());
-			output.addAll(aux.getRight().toCode());
 			output.add("#left");
-			output.add("lw $s0, "+left+"($gp)");
+			output.add("lw $s2, "+left+"($gp)");
+			output.addAll(aux.getRight().toCode());
 			output.add("#right");
-			output.add("lw $s1, "+right+"($gp)");
+			output.add("lw $s3, "+right+"($gp)");
 			
 			
 		}
@@ -117,27 +131,27 @@ public class IfStatement extends Statement {
 		
 		if (this.condition.getOp().equals(">")){
 			
-			output.add("ble $s0, $s1, ELSE");
+			output.add("ble $s2, $s3, ELSE"+counter);
 			
 		} else if(this.condition.getOp().equals("<")) {
 			
-			output.add("bge $s0, $s1, ELSE");
+			output.add("bge $s2, $s3, ELSE"+counter);
 			
 		} else if (this.condition.getOp().equals(">=")){
 			
-			output.add("bit $s0, $s1, ELSE");
+			output.add("blt $s2, $s3, ELSE"+counter);
 			
 		} else if (this.condition.getOp().equals("<=")){
 			
-			output.add("bgt $s0, $s1, ELSE");
+			output.add("bgt $s2, $s3, ELSE"+counter);
 			
 		} else if (this.condition.getOp().equals("==")){
 		
-			output.add("bne $s0, $s1, ELSE");
+			output.add("bne $s2, $s3, ELSE"+counter);
 			
 		} else {
 			
-			output.add("beq $s0, $s1, ELSE");
+			output.add("beq $s2, $s3, ELSE"+counter);
 		}
 		
 			
@@ -145,10 +159,12 @@ public class IfStatement extends Statement {
 		output.addAll(this.getThenInstructions().toCode());
 		
 		output.add("");
-		output.add("j NEXT ");
+		output.add("j NEXT"+counter);
 		output.add("");
+		output.add("ELSE"+counter+":");
 		output.addAll(this.getElseInstructions().toCode());
-		output.add("NEXT");
+		output.add("");
+		output.add("NEXT"+counter+":");
 		output.add("");
 		
 		return output;

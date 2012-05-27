@@ -56,6 +56,8 @@ public class WhileStatement extends Statement {
 	 */
 	public WhileStatement(int counter, Expression condition,
 			Statement instruction) {
+		
+		
 
 		if (!validOps.contains(condition.getOp())
 				&& !condition.getType().equals("int")) {
@@ -66,7 +68,7 @@ public class WhileStatement extends Statement {
 			System.exit(1);
 
 		}
-
+		this.counter = counter;
 		this.condition = condition;
 		this.instruction = instruction;
 
@@ -109,9 +111,9 @@ public class WhileStatement extends Statement {
 			
 			output.add("");
 			output.addAll(aux.getLeft().toCode());
-			output.addAll(aux.getRight().toCode());
 			output.add("#left");
 			output.add("lw $s0, "+left+"($gp)");
+			output.addAll(aux.getRight().toCode());
 			output.add("#right");
 			output.add("lw $s1, "+right+"($gp)");
 			
@@ -123,17 +125,25 @@ public class WhileStatement extends Statement {
 		output.add("");	
 		output.add("LOOP"+this.counter+":");
 		
-		if (this.condition.getOp().equals(">") || this.condition.getOp().equals("<") || this.condition.getOp().equals("!=")  ){
+		if (this.condition.getOp().equals(">")){
+			
+			output.add("ble $s0, $s1, ENDLOOP"+counter);
+			 
+		}else if (this.condition.getOp().equals("<")){
+			
+			output.add("bge $s0, $s1, ENDLOOP"+counter);
+			
+		}else if(this.condition.getOp().equals("!=")){
 			
 			output.add("beq $s0, $s1, ENDLOOP"+counter);
 			
-		} else if(this.condition.getOp().equals("<=")) {
+		}else if(this.condition.getOp().equals("<=")) {
 			
-			output.add("bgq $s0, $s1, ENDLOOP"+counter);
+			output.add("bgt $s0, $s1, ENDLOOP"+counter);
 			
 		} else if (this.condition.getOp().equals(">=")){
 			
-			output.add("bit $s0, $s1, ENDLOOP"+counter);
+			output.add("blt $s0, $s1, ENDLOOP"+counter);
 			
 		} else{
 			

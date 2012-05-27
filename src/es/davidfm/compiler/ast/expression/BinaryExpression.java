@@ -29,6 +29,8 @@
 package es.davidfm.compiler.ast.expression;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -137,9 +139,15 @@ public class BinaryExpression extends Expression {
 	 */
 	public ArrayList<String> toCode(){
 		
+		 List<String> relation = Arrays.asList(">", "<", "==", "!=",
+				"<=", ">=");
+		 
 		ArrayList<String> output = new ArrayList<String>();
 		output.addAll(left.toCode());
 		output.addAll(right.toCode());
+		
+		if (!relation.contains(op)){
+		
 		char operator = op.charAt(0);
 		
 		if (this.getType().equals("int")){
@@ -223,7 +231,7 @@ public class BinaryExpression extends Expression {
 			
 		}
 		
-		
+		}
 		return output;
 		
 	}

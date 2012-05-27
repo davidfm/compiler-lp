@@ -97,16 +97,34 @@ public class TSymbols {
 			return null;
 	}
 	
+	public Variable getVariableAll(String name){
+		
+		
+		Iterator<Hashtable<String, Variable>> it = this.stack.iterator();
+		boolean returned = false;
+		Variable output = null;
+		
+		
+		while (it.hasNext() && !returned){
+			
+			Hashtable<String,Variable> aux = it.next();
+			
+					
+			
+			if (aux.containsKey(name)){
+								
+				output = (Variable) aux.get(name);
+				returned = true;
+			}
+			
+		}
+		
+		return output;
+		
+	}
 	
-//	/**
-//	 * Checks if the variable exists in the current scope
-//	 * @param name
-//	 * @return true if the variable exists
-//	 */
-//	public boolean exists(String name){
-//		
-//		return this.stack.peek().containsKey(name);
-//	}
+	
+
 	
 	/**
 	 * Checks if the variable exists in any of the scopes
