@@ -93,14 +93,14 @@ public class AssignStatement extends Statement {
 		if (!t1.equals(t2)) {
 			
 		
-			if (t1.equals("int") && t2.equals("float")){
+//			if (t1.equals("int") && t2.equals("float")){
+//				
+//				System.out.println("ERROR: You cannot assign a " + t2
+//						+ " to an " + t1);
+//				System.out.println("Analysis terminated");
+//				System.exit(1);
 				
-				System.out.println("ERROR: You cannot assign a " + t2
-						+ " to an " + t1);
-				System.out.println("Analysis terminated");
-				System.exit(1);
-				
-			} else if (t1.equals("int") && t2.equals("String")){
+			if (t1.equals("int") && t2.equals("String")){
 					
 					System.out.println("ERROR: You cannot assign a " + t2
 							+ " to an " + t1);
@@ -181,6 +181,13 @@ public class AssignStatement extends Statement {
 			output.add("cvt.s.w $f2, $f0");
 			output.add("swc1 $f2, " + left.getMemoryAddress() + "($gp)");
 
+		} else if (left.getType().equals("int")){
+			
+			output.addAll(exp.toCode());
+			output.add("lwc1 $f0, " + exp.getMemoryAddress() + "($gp)");
+			output.add("round.w.s $f1, $f0");
+			output.add("mfc1 $t0, $f1");
+			output.add("sw $t0, " + left.getMemoryAddress() + "($gp)");
 		}
 
 		return output;

@@ -5,40 +5,23 @@ rivinvaihto: .asciiz "\n"
 
 main: 
 
-li $t0, 0
+li $t0, 4
 sw $t0, 4($gp)
+li.s $f2, 5.5
+swc1 $f2, 8($gp)
 lw $t0, 4($gp)
+mtc1 $t0, $f6
+cvt.s.w $f2, $f6
+lwc1 $f4, 8($gp)
+add.s $f2, $f2, $f4
+swc1 $f2, 12($gp)
+lwc1 $f0, 12($gp)
+round.w.s $f1, $f0
+mfc1 $t0, $f1
 sw $t0, 0($gp)
-
-#left
-lw $s0, 0($gp)
-li $t0, 10
-sw $t0, 8($gp)
-#right
-lw $s1, 8($gp)
-
-LOOP0:
-bgt $s0, $s1, ENDLOOP0
 li $v0, 1
 lw $a0, 0($gp)
 syscall
-li $v0, 4
-la $a0, rivinvaihto
-syscall
-li $t0, 1
-sw $t0, 16($gp)
-lw $t0, 0($gp)
-lw $t1, 16($gp)
-add $t0, $t0, $t1
-sw $t0, 20($gp)
-lw $t0, 20($gp)
-sw $t0, 0($gp)
-lw $s0, 0($gp)
-
-j LOOP0
-
-ENDLOOP0:
-
 
 li $v0, 10
 syscall
